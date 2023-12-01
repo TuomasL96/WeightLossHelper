@@ -32,12 +32,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -50,10 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = InputMenu();
+        page = const UserProfileCreatorMenu();
         break;
       case 1:
-        page = InputMenu();
+        page = const UserProfileCreatorMenu();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -68,12 +70,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 extended: constraints.maxWidth >= 600,
                 destinations: const [
                   NavigationRailDestination(
-                    icon: Icon(Icons.home),
+                    icon: Icon(Icons.man_3),
                     label: Text('User'),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.favorite),
-                    label: Text('Graph'),
+                    icon: Icon(Icons.auto_graph_outlined),
+                    label: Text('Weight Graph'),
                   ),
                 ],
                 selectedIndex: selectedIndex,
