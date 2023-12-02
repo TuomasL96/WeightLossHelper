@@ -9,7 +9,7 @@ class UserProfileCreatorMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: UserProfileInputField('test'),
       //   Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
       // UserProfileInputField('Name'),
@@ -48,10 +48,7 @@ class _MyInputState extends State<UserProfileInputField> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Form'),
-      ),
-      body: Form(
+          body: Form(
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
@@ -60,6 +57,7 @@ class _MyInputState extends State<UserProfileInputField> {
                 builder: (_) => TextField(
                   onChanged: (value) => store.setUsername(value),
                   decoration: InputDecoration(
+                      border: OutlineInputBorder(),
                       labelText: 'Username',
                       hintText: 'Pick a username',
                       errorText: store.error.username),
@@ -71,29 +69,36 @@ class _MyInputState extends State<UserProfileInputField> {
                       //opacity: store.isUserCheckPending ? 1 : 0,
                       opacity: 0.1,
                       child: const LinearProgressIndicator())),
+              SizedBox(height: 10),
               Observer(
                 builder: (_) => TextField(
                   keyboardType: TextInputType.number,
                   onChanged: (value) => store.setAge(value),
                   decoration: InputDecoration(
+                      border: OutlineInputBorder(),
                       labelText: 'Age',
                       hintText: 'Enter your age',
                       errorText: store.error.age),
                 ),
               ),
+              SizedBox(height: 10),
               Observer(
                 builder: (_) => TextField(
                   keyboardType: TextInputType.number,
                   onChanged: (value) => store.setHeight(value),
                   decoration: InputDecoration(
+                      border: OutlineInputBorder(),
                       labelText: 'Height',
                       hintText: 'Enter your height',
                       errorText: store.error.height),
                 ),
               ),
-              ElevatedButton(
-                onPressed: store.validateAll,
-                child: const Text('Create account'),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ElevatedButton(
+                  onPressed: store.validateAll,
+                  child: const Text('Create account'),
+                ),
               )
             ],
           ),
@@ -109,4 +114,20 @@ class _MyInputState extends State<UserProfileInputField> {
               border: OutlineInputBorder(), hintText: 'Enter $measurement'),
         ));
   } */
+}
+
+class UserInputTextField extends _MyInputState {
+  UserInputTextField(super.measurement, var functionToCall);
+
+  @override
+  Widget build(BuildContext context) {
+    return Observer(
+        builder: (_) => TextField(
+              onChanged: (value) => store.setUsername(value),
+              decoration: InputDecoration(
+                  labelText: measurement,
+                  hintText: 'Pick a $measurement',
+                  errorText: store.error.username),
+            ));
+  }
 }
