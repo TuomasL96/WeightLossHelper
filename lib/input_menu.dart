@@ -57,25 +57,18 @@ class _MyInputState extends State<UserProfileInputField> {
                 builder: (_) => TextField(
                   onChanged: (value) => store.setUsername(value),
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(),
                       labelText: 'Username',
                       hintText: 'Pick a username',
                       errorText: store.error.username),
                 ),
               ),
-              Observer(
-                  builder: (_) => AnimatedOpacity(
-                      duration: const Duration(milliseconds: 300),
-                      //opacity: store.isUserCheckPending ? 1 : 0,
-                      opacity: 0.1,
-                      child: const LinearProgressIndicator())),
+
               SizedBox(height: 10),
               Observer(
                 builder: (_) => TextField(
                   keyboardType: TextInputType.number,
                   onChanged: (value) => store.setAge(value),
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(),
                       labelText: 'Age',
                       hintText: 'Enter your age',
                       errorText: store.error.age),
@@ -87,7 +80,6 @@ class _MyInputState extends State<UserProfileInputField> {
                   keyboardType: TextInputType.number,
                   onChanged: (value) => store.setHeight(value),
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(),
                       labelText: 'Height',
                       hintText: 'Enter your height',
                       errorText: store.error.height),
@@ -116,18 +108,4 @@ class _MyInputState extends State<UserProfileInputField> {
   } */
 }
 
-class UserInputTextField extends _MyInputState {
-  UserInputTextField(super.measurement, var functionToCall);
 
-  @override
-  Widget build(BuildContext context) {
-    return Observer(
-        builder: (_) => TextField(
-              onChanged: (value) => store.setUsername(value),
-              decoration: InputDecoration(
-                  labelText: measurement,
-                  hintText: 'Pick a $measurement',
-                  errorText: store.error.username),
-            ));
-  }
-}
