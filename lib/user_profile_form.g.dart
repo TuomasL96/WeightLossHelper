@@ -142,19 +142,18 @@ mixin _$FormErrorState on _FormErrorState, Store {
               name: '_FormErrorState.hasErrors'))
           .value;
 
-  late final _$usernameAtom =
-      Atom(name: '_FormErrorState.username', context: context);
+  late final _$nameAtom = Atom(name: '_FormErrorState.name', context: context);
 
   @override
-  String? get username {
-    _$usernameAtom.reportRead();
-    return super.username;
+  String? get name {
+    _$nameAtom.reportRead();
+    return super.name;
   }
 
   @override
-  set username(String? value) {
-    _$usernameAtom.reportWrite(value, super.username, () {
-      super.username = value;
+  set name(String? value) {
+    _$nameAtom.reportWrite(value, super.name, () {
+      super.name = value;
     });
   }
 
@@ -192,7 +191,7 @@ mixin _$FormErrorState on _FormErrorState, Store {
   @override
   String toString() {
     return '''
-username: ${username},
+name: ${name},
 age: ${age},
 height: ${height},
 hasErrors: ${hasErrors}

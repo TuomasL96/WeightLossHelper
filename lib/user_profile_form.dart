@@ -1,5 +1,4 @@
 import 'dart:ffi';
-
 import 'package:mobx/mobx.dart';
 import 'package:validators2/validators2.dart';
 
@@ -53,17 +52,17 @@ abstract class _FormStore with Store {
   @action
   void validateUsername(String value) {
     if (isNull(value) || value.isEmpty) {
-      error.username = 'Cannot be blank';
+      error.name = 'Cannot be blank';
       return;
     }
 
-    error.username = null;
+    error.name = null;
   }
 
   @action
   void validateAge(String value) {
     if (isNull(value) || value.isEmpty) {
-      error.username = 'Cannot be blank';
+      error.age = 'Cannot be blank';
       return;
     }
 
@@ -77,7 +76,7 @@ abstract class _FormStore with Store {
       return;
     }
 
-    error.username = null;
+    error.height = null;
   }
 
   void dispose() {
@@ -91,7 +90,7 @@ class FormErrorState = _FormErrorState with _$FormErrorState;
 
 abstract class _FormErrorState with Store {
   @observable
-  String? username;
+  String? name;
 
   @observable
   String? age;
@@ -100,5 +99,5 @@ abstract class _FormErrorState with Store {
   String? height;
 
   @computed
-  bool get hasErrors => username != null || age != null || height != null;
+  bool get hasErrors => name != null || age != null || height != null;
 }

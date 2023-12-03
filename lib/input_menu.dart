@@ -1,111 +1,123 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:flutter/services.dart';
+
 import 'user_profile_form.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter/material.dart';
 
 class UserProfileCreatorMenu extends StatelessWidget {
-  const UserProfileCreatorMenu({super.key});
+  UserProfileCreatorMenu({super.key});
+  final FormStore formStore = FormStore();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: UserProfileInputField('test'),
-      //   Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
-      // UserProfileInputField('Name'),
-      // UserProfileInputField('Height'),
-      // UserProfileInputField('Age'),
-      //]),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      child: Column(children: [
+        InputField(formStore, 'username'),
+        InputField(formStore, 'age'),
+        InputField(formStore, 'height'),
+        ElevatedButton(
+            onPressed: formStore.validateAll,
+            child: const Text('Create account'))
+      ]),
     );
   }
 }
 
-class UserProfileInputField extends StatefulWidget {
-  final String inputText;
-  const UserProfileInputField(this.inputText, {super.key});
+class InputField extends StatefulWidget {
+  final FormStore formStore;
+  final String inputType;
 
-  State<StatefulWidget> createState() => _MyInputState(inputText);
-}
+  InputField(
+    this.formStore,
+    this.inputType, {
+    super.key,
+  });
 
-class _MyInputState extends State<UserProfileInputField> {
-  final String measurement;
-  final FormStore store = FormStore();
-
-  _MyInputState(this.measurement);
   final inputController = TextEditingController();
 
-  @override
   void initState() {
-    super.initState();
-    store.setupValidations();
+    initState();
+    formStore.setupValidations();
   }
 
   void dispose() {
-    //inputController.dispose();
-    store.dispose();
-    super.dispose();
+    inputController.dispose();
+    formStore.dispose();
+    dispose();
   }
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-          body: Form(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: <Widget>[
-              Observer(
-                builder: (_) => TextField(
-                  onChanged: (value) => store.setUsername(value),
-                  decoration: InputDecoration(
-                      labelText: 'Username',
-                      hintText: 'Pick a username',
-                      errorText: store.error.username),
-                ),
-              ),
+  getInputStateClassFromInputType(inputType) {
+    switch (inputType) {
+      case 'username':
+        return _UserNameInputFieldState(formStore);
+      case 'age':
+        return _UserAgeInputFieldState(formStore);
+      case 'height':
+        return _UserHeightInputFieldState(formStore);
+      case _:
+        throw "inputType doesn't match any value!!";
+    }
+  }
 
-              SizedBox(height: 10),
-              Observer(
-                builder: (_) => TextField(
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) => store.setAge(value),
-                  decoration: InputDecoration(
-                      labelText: 'Age',
-                      hintText: 'Enter your age',
-                      errorText: store.error.age),
-                ),
-              ),
-              SizedBox(height: 10),
-              Observer(
-                builder: (_) => TextField(
-                  keyboardType: TextInputType.number,
-                  onChanged: (value) => store.setHeight(value),
-                  decoration: InputDecoration(
-                      labelText: 'Height',
-                      hintText: 'Enter your height',
-                      errorText: store.error.height),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: ElevatedButton(
-                  onPressed: store.validateAll,
-                  child: const Text('Create account'),
-                ),
-              )
-            ],
-          ),
-        ),
-      ));
-/*   Widget build(BuildContext context) {
-    final value = inputController.text;
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: TextField(
-          controller: inputController,
-          decoration: InputDecoration(
-              border: OutlineInputBorder(), hintText: 'Enter $measurement'),
-        ));
-  } */
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      );
+
+  @override
+  State<InputField> createState() => getInputStateClassFromInputType(inputType);
 }
 
+class _UserNameInputFieldState extends State<InputField> {
+  final FormStore formStore;
+  _UserNameInputFieldState(this.formStore);
 
+  @override
+  Widget build(BuildContext context) => Observer(
+      builder: (_) => TextField(
+            onChanged: (value) => formStore.setUsername(value),
+            decoration: InputDecoration(
+                labelText: 'Name',
+                hintText: 'Your name',
+                errorText: formStore.error.name),
+          ));
+}
+
+class _UserAgeInputFieldState extends State<InputField> {
+  final FormStore formStore;
+  _UserAgeInputFieldState(this.formStore);
+
+  @override
+  Widget build(BuildContext context) => Observer(
+      builder: (_) => TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
+            onChanged: (value) => formStore.setAge(value),
+            decoration: InputDecoration(
+                labelText: 'Age',
+                hintText: 'Your age',
+                errorText: formStore.error.age),
+          ));
+}
+
+class _UserHeightInputFieldState extends State<InputField> {
+  final FormStore formStore;
+  _UserHeightInputFieldState(this.formStore);
+
+  @override
+  Widget build(BuildContext context) => Observer(
+      builder: (_) => TextField(
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
+            onChanged: (value) => formStore.setHeight(value),
+            decoration: InputDecoration(
+                labelText: 'Height',
+                hintText: 'Your height',
+                errorText: formStore.error.height),
+          ));
+}

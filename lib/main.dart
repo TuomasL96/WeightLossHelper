@@ -14,13 +14,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-        inputDecorationTheme: const InputDecorationTheme(
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.all(8.0)
-          )
-      ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          inputDecorationTheme: const InputDecorationTheme(
+              filled: true,
+              fillColor: Colors.white30,
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.all(8.0))),
       home: const MyHomePage(),
     );
   }
@@ -41,10 +41,10 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = const UserProfileCreatorMenu();
+        page = UserProfileCreatorMenu();
         break;
       case 1:
-        page = const UserProfileCreatorMenu();
+        page = UserProfileCreatorMenu();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -52,42 +52,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
-        color: Theme.of(context).colorScheme.primaryContainer,
-        body:
-  
-          child: Row(
-            children: [
-                SafeArea(
-                  child: NavigationRail(
-                    extended: constraints.maxWidth >= 800,
-                    destinations: const [
-                      NavigationRailDestination(
-                        icon: Icon(Icons.man_3),
-                        label: Text('User'),
-                      ),
-                      NavigationRailDestination(
-                        icon: Icon(Icons.auto_graph_outlined),
-                        label: Text('Weight Graph'),
-                      ),
-                    ],
-                    selectedIndex: selectedIndex,
-                    onDestinationSelected: (value) {
-                      setState(() {
-                        selectedIndex = value;
-                      });
-                    },
+        body: Row(
+          children: [
+            SafeArea(
+              child: NavigationRail(
+                extended: constraints.maxWidth >= 800,
+                destinations: const [
+                  NavigationRailDestination(
+                    icon: Icon(Icons.man_3),
+                    label: Text('User'),
                   ),
-                ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.auto_graph_outlined),
+                    label: Text('Weight Graph'),
+                  ),
+                ],
+                selectedIndex: selectedIndex,
+                onDestinationSelected: (value) {
+                  setState(() {
+                    selectedIndex = value;
+                  });
+                },
               ),
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  child: page,
-                ),
+            ),
+            Expanded(
+              child: Container(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                child: page,
               ),
-            ],
-          ),
-        
+            ),
+          ],
+        ),
       );
     });
   }
