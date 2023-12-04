@@ -16,13 +16,16 @@ abstract class _FormStore with Store {
   @observable
   String height = '';
 
+  @observable
+  bool? isMale;
+
   late List<ReactionDisposer> _disposers;
 
   void setupValidations() {
     _disposers = [
       reaction((_) => name, validateUsername),
       reaction((_) => age, validateAge),
-      reaction((_) => height, validateHeight)
+      reaction((_) => height, validateHeight),
     ];
   }
 
@@ -45,6 +48,11 @@ abstract class _FormStore with Store {
   @action
   void setHeight(String value) {
     height = value;
+  }
+
+  @action
+  void setMale(bool value) {
+    isMale = value;
   }
 
   final FormErrorState error = FormErrorState();
@@ -97,6 +105,9 @@ abstract class _FormErrorState with Store {
 
   @observable
   String? height;
+
+  @observable
+  bool? gender;
 
   @computed
   bool get hasErrors => name != null || age != null || height != null;

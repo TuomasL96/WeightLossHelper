@@ -8,15 +8,18 @@ import 'package:flutter/material.dart';
 class UserProfileCreatorMenu extends StatelessWidget {
   UserProfileCreatorMenu({super.key});
   final FormStore formStore = FormStore();
-
+  final List<String> genderList = <String>['Male', 'Female'];
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       child: Column(children: [
         InputField(formStore, 'username'),
+        SizedBox(height: 10),
         InputField(formStore, 'age'),
+        SizedBox(height: 10),
         InputField(formStore, 'height'),
+        UserDropdownMenu(formStore, genderList),
         ElevatedButton(
             onPressed: formStore.validateAll,
             child: const Text('Create account'))
@@ -120,4 +123,53 @@ class _UserHeightInputFieldState extends State<InputField> {
                 hintText: 'Your height',
                 errorText: formStore.error.height),
           ));
+}
+
+class UserDropdownMenu extends StatefulWidget {
+  final FormStore formStore;
+  final List<String> selectionList;
+  UserDropdownMenu(this.formStore, this.selectionList, {super.key});
+
+  void initState() {
+    initState();
+    formStore.setupValidations();
+  }
+
+  void dispose() {
+    formStore.dispose();
+    dispose();
+  }
+
+  @override
+  State<UserDropdownMenu> createState() =>
+      _UserDropdownMenuState(formStore, selectionList);
+}
+
+class _UserDropdownMenuState extends State<UserDropdownMenu> {
+  final FormStore formStore;
+  final List<String> selectionList;
+  _UserDropdownMenuState(this.formStore, this.selectionList);
+
+  void setGenderAsBool(String value) {
+    if (value == 'Male') {
+      formStore.setMale(true);
+    } else {
+      formStore.setMale(false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      child: Observer(
+          builder: (_) => DropdownMenu(
+                initialSelection: selectionList.first,
+                onSelected: (value) {
+                  setGenderAsBool(value!);
+                },
+                dropdownMenuEntries: selectionList
+                    .map<DropdownMenuEntry<String>>((String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                }).toList(),
+              )));
 }

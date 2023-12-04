@@ -54,6 +54,21 @@ mixin _$FormStore on _FormStore, Store {
     });
   }
 
+  late final _$isMaleAtom = Atom(name: '_FormStore.isMale', context: context);
+
+  @override
+  bool? get isMale {
+    _$isMaleAtom.reportRead();
+    return super.isMale;
+  }
+
+  @override
+  set isMale(bool? value) {
+    _$isMaleAtom.reportWrite(value, super.isMale, () {
+      super.isMale = value;
+    });
+  }
+
   late final _$_FormStoreActionController =
       ActionController(name: '_FormStore', context: context);
 
@@ -85,6 +100,17 @@ mixin _$FormStore on _FormStore, Store {
         _$_FormStoreActionController.startAction(name: '_FormStore.setHeight');
     try {
       return super.setHeight(value);
+    } finally {
+      _$_FormStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setMale(bool value) {
+    final _$actionInfo =
+        _$_FormStoreActionController.startAction(name: '_FormStore.setMale');
+    try {
+      return super.setMale(value);
     } finally {
       _$_FormStoreActionController.endAction(_$actionInfo);
     }
@@ -128,7 +154,8 @@ mixin _$FormStore on _FormStore, Store {
     return '''
 name: ${name},
 age: ${age},
-height: ${height}
+height: ${height},
+isMale: ${isMale}
     ''';
   }
 }
@@ -188,12 +215,29 @@ mixin _$FormErrorState on _FormErrorState, Store {
     });
   }
 
+  late final _$genderAtom =
+      Atom(name: '_FormErrorState.gender', context: context);
+
+  @override
+  bool? get gender {
+    _$genderAtom.reportRead();
+    return super.gender;
+  }
+
+  @override
+  set gender(bool? value) {
+    _$genderAtom.reportWrite(value, super.gender, () {
+      super.gender = value;
+    });
+  }
+
   @override
   String toString() {
     return '''
 name: ${name},
 age: ${age},
 height: ${height},
+gender: ${gender},
 hasErrors: ${hasErrors}
     ''';
   }
