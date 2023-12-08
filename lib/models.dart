@@ -18,7 +18,10 @@ class User {
 @Entity()
 class WeightIn {
   int? id;
+  int weight;
 
-  DateTime? dateTime;
-  int? weight;
+  @Property(type: PropertyType.date)
+  DateTime date;
+
+  WeightIn(this.weight, this.date, {this.id = 0});
 }
