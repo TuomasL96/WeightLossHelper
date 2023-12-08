@@ -57,13 +57,13 @@ mixin _$FormStore on _FormStore, Store {
   late final _$isMaleAtom = Atom(name: '_FormStore.isMale', context: context);
 
   @override
-  bool? get isMale {
+  bool get isMale {
     _$isMaleAtom.reportRead();
     return super.isMale;
   }
 
   @override
-  set isMale(bool? value) {
+  set isMale(bool value) {
     _$isMaleAtom.reportWrite(value, super.isMale, () {
       super.isMale = value;
     });

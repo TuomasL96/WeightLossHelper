@@ -1,13 +1,17 @@
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'models.dart';
 import 'objectbox.g.dart'; // created by `flutter pub run build_runner build`
 
 class ObjectBox {
-  /// The Store of this app.
-  late final Store userStore;
+  late final Store store;
+  late final Box<User> userBox;
+  late final Box<WeightIn> weightInBox;
 
-  ObjectBox._create(this.userStore) {
+  ObjectBox._create(this.store) {
     // Add any additional setup code, e.g. build queries.
+    userBox = Box<User>(store);
+    weightInBox = Box<WeightIn>(store);
   }
 
   /// Create an instance of ObjectBox to use throughout the app.

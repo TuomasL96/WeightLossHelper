@@ -9,15 +9,14 @@ class UserProfileCreatorMenu extends StatelessWidget {
   UserProfileCreatorMenu({super.key});
   final FormStore formStore = FormStore();
   final List<String> genderList = <String>['Male', 'Female'];
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       child: Column(children: [
         InputField(formStore, 'username'),
-        SizedBox(height: 10),
         InputField(formStore, 'age'),
-        SizedBox(height: 10),
         InputField(formStore, 'height'),
         CustomDropDownMenu(
             hint: 'Your sex',
@@ -69,10 +68,6 @@ class InputField extends StatefulWidget {
     }
   }
 
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      );
-
   @override
   State<InputField> createState() => getInputStateClassFromInputType(inputType);
 }
@@ -82,14 +77,17 @@ class _UserNameInputFieldState extends State<InputField> {
   _UserNameInputFieldState(this.formStore);
 
   @override
-  Widget build(BuildContext context) => Observer(
-      builder: (_) => TextField(
-            onChanged: (value) => formStore.name = value,
-            decoration: InputDecoration(
-                labelText: 'Name',
-                hintText: 'Your name',
-                errorText: formStore.error.name),
-          ));
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Observer(
+            builder: (_) => TextField(
+                  onChanged: (value) => formStore.name = value,
+                  decoration: InputDecoration(
+                      labelText: 'Name',
+                      hintText: 'Your name',
+                      errorText: formStore.error.name),
+                )),
+      );
 }
 
 class _UserAgeInputFieldState extends State<InputField> {
@@ -97,18 +95,21 @@ class _UserAgeInputFieldState extends State<InputField> {
   _UserAgeInputFieldState(this.formStore);
 
   @override
-  Widget build(BuildContext context) => Observer(
-      builder: (_) => TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (value) => formStore.setAge(value),
-            decoration: InputDecoration(
-                labelText: 'Age',
-                hintText: 'Your age',
-                errorText: formStore.error.age),
-          ));
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Observer(
+            builder: (_) => TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  onChanged: (value) => formStore.setAge(value),
+                  decoration: InputDecoration(
+                      labelText: 'Age',
+                      hintText: 'Your age',
+                      errorText: formStore.error.age),
+                )),
+      );
 }
 
 class _UserHeightInputFieldState extends State<InputField> {
@@ -116,60 +117,22 @@ class _UserHeightInputFieldState extends State<InputField> {
   _UserHeightInputFieldState(this.formStore);
 
   @override
-  Widget build(BuildContext context) => Observer(
-      builder: (_) => TextField(
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (value) => formStore.setHeight(value),
-            decoration: InputDecoration(
-                labelText: 'Height',
-                hintText: 'Your height',
-                errorText: formStore.error.height),
-          ));
-}
-
-/* class UserDropdownMenu extends StatefulWidget {
-  final FormStore formStore;
-  final List<String> selectionList;
-  UserDropdownMenu(this.formStore, this.selectionList, {super.key});
-
-  void initState() {
-    initState();
-    formStore.setupValidations();
-  }
-
-  void dispose() {
-    formStore.dispose();
-    dispose();
-  }
-
-  @override
-  State<UserDropdownMenu> createState() =>
-      _UserDropdownMenuState(formStore, selectionList);
-}
-
-class _UserDropdownMenuState extends State<UserDropdownMenu> {
-  final FormStore formStore;
-  final List<String> selectionList;
-  _UserDropdownMenuState(this.formStore, this.selectionList);
-
-  @override
   Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      child: Observer(
-          builder: (_) => DropdownMenu(
-                initialSelection: selectionList.first,
-                onSelected: (value) {
-                  setGenderAsBool(value!);
-                },
-                dropdownMenuEntries: selectionList
-                    .map<DropdownMenuEntry<String>>((String value) {
-                  return DropdownMenuEntry<String>(value: value, label: value);
-                }).toList(),
-              )));
-} */
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Observer(
+            builder: (_) => TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  onChanged: (value) => formStore.setHeight(value),
+                  decoration: InputDecoration(
+                      labelText: 'Height',
+                      hintText: 'Your height',
+                      errorText: formStore.error.height),
+                )),
+      );
+}
 
 class CustomDropDownMenu extends StatelessWidget {
   final double? height;
@@ -191,7 +154,7 @@ class CustomDropDownMenu extends StatelessWidget {
     return Container(
       height: height ?? 70,
       width: width ?? double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Observer(
           builder: (_) => DropdownMenu(
                 initialSelection: dropDownList.first,

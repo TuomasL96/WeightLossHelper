@@ -4,7 +4,6 @@ import 'package:objectbox/objectbox.dart';
 
 @Entity()
 class User {
-  @Id()
   int? id;
 
   String? name;
@@ -12,12 +11,14 @@ class User {
   String? height;
   bool? isMale;
   List? weightIn;
+
+  User(this.name, this.age, this.height, this.isMale, {this.id = 0});
 }
 
 @Entity()
 class WeightIn {
-  @Id()
   int? id;
+
   DateTime? dateTime;
   int? weight;
 }

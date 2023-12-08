@@ -1,8 +1,13 @@
 import 'dart:ffi';
 import 'package:mobx/mobx.dart';
+import 'package:open_weight_tracker/main.dart';
+import 'package:open_weight_tracker/models.dart';
 import 'package:validators2/validators2.dart';
+import 'userdata_manager.dart';
 
 part 'user_profile_form.g.dart';
+
+UserDataManager userDataManager = UserDataManager();
 
 class FormStore = _FormStore with _$FormStore;
 
@@ -17,7 +22,7 @@ abstract class _FormStore with Store {
   String height = '';
 
   @observable
-  bool? isMale = true;
+  bool isMale = true;
 
   late List<ReactionDisposer> _disposers;
 
@@ -34,7 +39,12 @@ abstract class _FormStore with Store {
     validateHeight(height);
     validateUsername(name);
     if (!error.hasErrors) {
-      print(height + name + age);
+      userDataManager.createOrUpdateUser(
+        name,
+        age,
+        height,
+        isMale,
+      );
       //setUsername('fdsf'); //example function
     }
   }
