@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'input_menu.dart';
+import 'objectbox_store.dart';
 
-void main() {
+late ObjectBox objectBox;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  objectBox = await ObjectBox.create();
   runApp(const MyApp());
 }
 

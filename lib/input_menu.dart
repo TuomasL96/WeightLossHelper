@@ -19,7 +19,12 @@ class UserProfileCreatorMenu extends StatelessWidget {
         InputField(formStore, 'age'),
         SizedBox(height: 10),
         InputField(formStore, 'height'),
-        UserDropdownMenu(formStore, genderList),
+        CustomDropDownMenu(
+            hint: 'Your sex',
+            onSelected: (value) {
+              formStore.setMale(value);
+            },
+            dropDownList: genderList),
         ElevatedButton(
             onPressed: formStore.validateAll,
             child: const Text('Create account'))
@@ -79,7 +84,7 @@ class _UserNameInputFieldState extends State<InputField> {
   @override
   Widget build(BuildContext context) => Observer(
       builder: (_) => TextField(
-            onChanged: (value) => formStore.setUsername(value),
+            onChanged: (value) => formStore.name = value,
             decoration: InputDecoration(
                 labelText: 'Name',
                 hintText: 'Your name',
@@ -125,7 +130,7 @@ class _UserHeightInputFieldState extends State<InputField> {
           ));
 }
 
-class UserDropdownMenu extends StatefulWidget {
+/* class UserDropdownMenu extends StatefulWidget {
   final FormStore formStore;
   final List<String> selectionList;
   UserDropdownMenu(this.formStore, this.selectionList, {super.key});
@@ -150,14 +155,6 @@ class _UserDropdownMenuState extends State<UserDropdownMenu> {
   final List<String> selectionList;
   _UserDropdownMenuState(this.formStore, this.selectionList);
 
-  void setGenderAsBool(String value) {
-    if (value == 'Male') {
-      formStore.setMale(true);
-    } else {
-      formStore.setMale(false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -172,4 +169,38 @@ class _UserDropdownMenuState extends State<UserDropdownMenu> {
                   return DropdownMenuEntry<String>(value: value, label: value);
                 }).toList(),
               )));
+} */
+
+class CustomDropDownMenu extends StatelessWidget {
+  final double? height;
+  final double? width;
+  final String hint;
+  final List<String> dropDownList;
+  final ValueSetter onSelected;
+
+  const CustomDropDownMenu(
+      {super.key,
+      this.height,
+      this.width,
+      required this.hint,
+      required this.onSelected,
+      required this.dropDownList});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height ?? 70,
+      width: width ?? double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+      child: Observer(
+          builder: (_) => DropdownMenu(
+                initialSelection: dropDownList.first,
+                onSelected: onSelected,
+                dropdownMenuEntries:
+                    dropDownList.map<DropdownMenuEntry<String>>((String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                }).toList(),
+              )),
+    );
+  }
 }

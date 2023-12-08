@@ -36,9 +36,33 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:1074535499665101775",
+      "lastPropertyId": "3:3567051800736879791",
+      "name": "WeightIn",
+      "properties": [
+        {
+          "id": "1:2256125015988663197",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8752628193005041138",
+          "name": "dateTime",
+          "type": 10
+        },
+        {
+          "id": "3:3567051800736879791",
+          "name": "weight",
+          "type": 6
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "1:2986369161817524130",
+  "lastEntityId": "2:1074535499665101775",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

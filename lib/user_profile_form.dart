@@ -17,7 +17,7 @@ abstract class _FormStore with Store {
   String height = '';
 
   @observable
-  bool? isMale;
+  bool? isMale = true;
 
   late List<ReactionDisposer> _disposers;
 
@@ -33,6 +33,10 @@ abstract class _FormStore with Store {
     validateAge(age);
     validateHeight(height);
     validateUsername(name);
+    if (!error.hasErrors) {
+      print(height + name + age);
+      //setUsername('fdsf'); //example function
+    }
   }
 
   @action
@@ -51,8 +55,12 @@ abstract class _FormStore with Store {
   }
 
   @action
-  void setMale(bool value) {
-    isMale = value;
+  void setMale(String value) {
+    if (value.toLowerCase() == 'male') {
+      isMale = true;
+    } else {
+      isMale = false;
+    }
   }
 
   final FormErrorState error = FormErrorState();
@@ -110,5 +118,6 @@ abstract class _FormErrorState with Store {
   bool? gender;
 
   @computed
-  bool get hasErrors => name != null || age != null || height != null;
+  bool get hasErrors =>
+      name != null || age != null || height != null; // || gender != null;
 }

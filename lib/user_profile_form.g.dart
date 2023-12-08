@@ -106,7 +106,7 @@ mixin _$FormStore on _FormStore, Store {
   }
 
   @override
-  void setMale(bool value) {
+  void setMale(String value) {
     final _$actionInfo =
         _$_FormStoreActionController.startAction(name: '_FormStore.setMale');
     try {
