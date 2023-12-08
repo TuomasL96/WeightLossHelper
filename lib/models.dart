@@ -5,12 +5,12 @@ import 'package:objectbox/objectbox.dart';
 @Entity()
 class User {
   int? id;
-
-  String? name;
-  String? age;
-  String? height;
-  bool? isMale;
-  List? weightIn;
+  String name;
+  String age;
+  String height;
+  bool isMale;
+  bool? isCurrentUser;
+  List<WeightIn>? weightIns;
 
   User(this.name, this.age, this.height, this.isMale, {this.id = 0});
 }

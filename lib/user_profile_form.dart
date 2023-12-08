@@ -3,11 +3,11 @@ import 'package:mobx/mobx.dart';
 import 'package:open_weight_tracker/main.dart';
 import 'package:open_weight_tracker/models.dart';
 import 'package:validators2/validators2.dart';
-import 'userdata_manager.dart';
+import 'user_repository.dart';
 
 part 'user_profile_form.g.dart';
 
-UserDataManager userDataManager = UserDataManager();
+UserRepository userRepository = UserRepository();
 
 class FormStore = _FormStore with _$FormStore;
 
@@ -39,13 +39,7 @@ abstract class _FormStore with Store {
     validateHeight(height);
     validateUsername(name);
     if (!error.hasErrors) {
-      userDataManager.createOrUpdateUser(
-        name,
-        age,
-        height,
-        isMale,
-      );
-      //setUsername('fdsf'); //example function
+      userRepository.save(User(name, age, height, isMale));
     }
   }
 
@@ -78,7 +72,7 @@ abstract class _FormStore with Store {
   @action
   void validateUsername(String value) {
     if (isNull(value) || value.isEmpty) {
-      error.name = 'Cannot be blank';
+      error.name = 'Username cannot be blank';
       return;
     }
 
