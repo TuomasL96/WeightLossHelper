@@ -1,22 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:open_weight_tracker/main.dart';
 import 'package:open_weight_tracker/objectbox.g.dart';
 import 'models.dart';
 
 class UserRepository {
-  void createOrUpdateUser(String name, String age, String height, bool isMale) {
-    User user = User(
-      name = name,
-      age = age,
-      height = height,
-      isMale = isMale,
-    );
-
-    objectBox.userBox.put(user);
-  }
-
   void save(User user) {
     if (findUserByName(user.name) != null) {
-      throw Error();
+      throw ErrorDescription('User already in DB');
     } else {
       objectBox.userBox.put(user);
     }

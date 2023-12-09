@@ -44,7 +44,7 @@
     },
     {
       "id": "2:1074535499665101775",
-      "lastPropertyId": "3:3567051800736879791",
+      "lastPropertyId": "4:7337571224714225370",
       "name": "WeightIn",
       "properties": [
         {
@@ -54,14 +54,14 @@
           "flags": 1
         },
         {
-          "id": "2:8752628193005041138",
-          "name": "dateTime",
-          "type": 10
-        },
-        {
           "id": "3:3567051800736879791",
           "name": "weight",
           "type": 6
+        },
+        {
+          "id": "4:7337571224714225370",
+          "name": "date",
+          "type": 10
         }
       ],
       "relations": []
@@ -76,7 +76,8 @@
   "retiredEntityUids": [],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
-    5070672748237897417
+    5070672748237897417,
+    8752628193005041138
   ],
   "retiredRelationUids": [],
   "version": 1
