@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter/services.dart';
+import 'package:mobx/mobx.dart';
 import 'user_profile_form.dart';
 
 final FormStore formStore = FormStore();
@@ -73,35 +74,20 @@ class CustomInputField extends StatefulWidget {
 
 class _CustomInputFieldState extends State<CustomInputField> {
   @override
-  void initState() {
-    super.initState();
-    formStore.setupValidations();
-  }
-
-  @override
-  void dispose() {
-    //inputController.dispose();
-    formStore.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Observer(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Observer(
           builder: (_) => TextField(
-                keyboardType: widget.keyboardType,
-                inputFormatters: <TextInputFormatter>[
-                  widget.textInputFormatter
-                ],
-                onChanged: widget.onChanged,
-                decoration: InputDecoration(
-                    labelText: widget.labelText,
-                    hintText: widget.hintText,
-                    errorText: widget.errorText),
+              keyboardType: widget.keyboardType,
+              inputFormatters: <TextInputFormatter>[widget.textInputFormatter],
+              onChanged: widget.onChanged,
+              decoration: InputDecoration(
+                labelText: widget.labelText,
+                hintText: widget.hintText,
+                errorText: formStore.error.name,
               )),
-    );
+        ));
   }
 }
 
