@@ -9,6 +9,20 @@ part of 'user_profile_form.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$FormStore on _FormStore, Store {
+  Computed<bool>? _$isUserCheckPendingComputed;
+
+  @override
+  bool get isUserCheckPending => (_$isUserCheckPendingComputed ??=
+          Computed<bool>(() => super.isUserCheckPending,
+              name: '_FormStore.isUserCheckPending'))
+      .value;
+  Computed<bool>? _$canLoginComputed;
+
+  @override
+  bool get canLogin => (_$canLoginComputed ??=
+          Computed<bool>(() => super.canLogin, name: '_FormStore.canLogin'))
+      .value;
+
   late final _$nameAtom = Atom(name: '_FormStore.name', context: context);
 
   @override
@@ -69,6 +83,31 @@ mixin _$FormStore on _FormStore, Store {
     });
   }
 
+  late final _$usernameCheckAtom =
+      Atom(name: '_FormStore.usernameCheck', context: context);
+
+  @override
+  ObservableFuture<bool> get usernameCheck {
+    _$usernameCheckAtom.reportRead();
+    return super.usernameCheck;
+  }
+
+  @override
+  set usernameCheck(ObservableFuture<bool> value) {
+    _$usernameCheckAtom.reportWrite(value, super.usernameCheck, () {
+      super.usernameCheck = value;
+    });
+  }
+
+  late final _$validateUsernameAsyncAction =
+      AsyncAction('_FormStore.validateUsername', context: context);
+
+  @override
+  Future<dynamic> validateUsername(String value) {
+    return _$validateUsernameAsyncAction
+        .run(() => super.validateUsername(value));
+  }
+
   late final _$_FormStoreActionController =
       ActionController(name: '_FormStore', context: context);
 
@@ -117,17 +156,6 @@ mixin _$FormStore on _FormStore, Store {
   }
 
   @override
-  void validateUsername(String value) {
-    final _$actionInfo = _$_FormStoreActionController.startAction(
-        name: '_FormStore.validateUsername');
-    try {
-      return super.validateUsername(value);
-    } finally {
-      _$_FormStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void validateAge(String value) {
     final _$actionInfo = _$_FormStoreActionController.startAction(
         name: '_FormStore.validateAge');
@@ -155,7 +183,10 @@ mixin _$FormStore on _FormStore, Store {
 name: ${name},
 age: ${age},
 height: ${height},
-isMale: ${isMale}
+isMale: ${isMale},
+usernameCheck: ${usernameCheck},
+isUserCheckPending: ${isUserCheckPending},
+canLogin: ${canLogin}
     ''';
   }
 }

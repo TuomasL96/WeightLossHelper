@@ -4,12 +4,10 @@ import 'package:open_weight_tracker/main.dart';
 import 'package:open_weight_tracker/models.dart';
 import 'package:validators2/validators2.dart';
 import 'user_repository.dart';
-
 part 'user_profile_form.g.dart';
 
-UserRepository userRepository = UserRepository();
-
 class FormStore = _FormStore with _$FormStore;
+UserRepository userRepository = UserRepository();
 
 abstract class _FormStore with Store {
   @observable
@@ -23,6 +21,15 @@ abstract class _FormStore with Store {
 
   @observable
   bool isMale = true;
+
+  @observable
+  ObservableFuture<bool> usernameCheck = ObservableFuture.value(true);
+
+  @computed
+  bool get isUserCheckPending => usernameCheck.status == FutureStatus.pending;
+
+  @computed
+  bool get canLogin => !error.hasErrors;
 
   late List<ReactionDisposer> _disposers;
 
@@ -38,8 +45,10 @@ abstract class _FormStore with Store {
     validateAge(age);
     validateHeight(height);
     validateUsername(name);
-    if (!error.hasErrors) {
-      userRepository.save(User(name, age, height, isMale));
+    if (canLogin) {
+      userRepository.save(User(name, age, height, isMale, false));
+    } else {
+      return;
     }
   }
 
@@ -70,12 +79,23 @@ abstract class _FormStore with Store {
   final FormErrorState error = FormErrorState();
 
   @action
-  void validateUsername(String value) {
+  Future validateUsername(String value) async {
     if (isNull(value) || value.isEmpty) {
-      error.name = 'Username cannot be blank';
+      error.name = 'Cannot be blank';
       return;
     }
 
+    try {
+      usernameCheck = ObservableFuture(checkValidUsername(value));
+      error.name = null;
+      final isValid = await usernameCheck;
+      if (!isValid) {
+        error.name = 'Username taken';
+        return;
+      }
+    } on Object catch (_) {
+      error.name = null;
+    }
     error.name = null;
   }
 
@@ -97,6 +117,12 @@ abstract class _FormStore with Store {
     }
 
     error.height = null;
+  }
+
+  Future<bool> checkValidUsername(String value) async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    return userRepository.isValidUserName(value);
   }
 
   void dispose() {
