@@ -12,7 +12,8 @@ class UserProfileCreatorMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: Theme.of(context).colorScheme.onPrimaryContainer,
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       child: Column(children: [
         InputField(formStore, 'username'),

@@ -44,16 +44,30 @@ class _UserMainMenuState extends State<UserMainMenu> {
 
 class UserList extends StatelessWidget {
   final List<User> users;
-  const UserList({super.key, required this.users});
+  UserList({super.key, required this.users});
+
+  late List<User> otherUsers = getAllButCurrentUser(users);
+
+  List<User> getAllButCurrentUser(users) {
+    List<User> otherUsers = [];
+    for (final User user in users) {
+      if (user.isCurrentUser == false) {
+        otherUsers.add(user);
+      } //else {
+      //throw ErrorDescription('Only current user found!');
+      //}
+    }
+    return otherUsers;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       flex: 1,
       child: ListView.builder(
-          itemCount: users.length,
+          itemCount: otherUsers.length,
           itemBuilder: (context, index) {
-            return UserSmallCard(users[index]);
+            return UserSmallCard(otherUsers[index]);
           }),
     );
   }
@@ -97,11 +111,17 @@ class _UserSmallCardState extends State<UserSmallCard> {
       color: Theme.of(context).colorScheme.onPrimaryContainer,
       shadowColor: Theme.of(context).colorScheme.onSecondaryContainer,
       child: ListTile(
-        leading: Icon(
-          getSexIcon(widget.user),
+        leading: const Icon(
+          Icons.account_circle,
           size: 50,
         ),
-        title: Text(widget.user.name),
+        title: Row(children: [
+          Text('${widget.user.name}'),
+          Icon(
+            getSexIcon(widget.user),
+            size: 20,
+          )
+        ]),
         subtitle: Text('Height: ${widget.user.height} Weight: TBI BMI: TBI '),
         trailing: const Icon(Icons.more_vert),
       ),

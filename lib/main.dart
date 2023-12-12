@@ -65,20 +65,27 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
+        appBar: PreferredSize(preferredSize: Size.zero, child: AppBar()),
         body: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SafeArea(
               child: NavigationRail(
+                indicatorColor: Theme.of(context).colorScheme.primaryContainer,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 minWidth: 60,
                 minExtendedWidth: 60,
-                extended: constraints.maxWidth >= 800,
+                extended: constraints.maxWidth >= 1200,
                 destinations: const [
                   NavigationRailDestination(
+                    indicatorColor: Colors.black,
+                    selectedIcon: Icon(Icons.man_3_outlined),
                     icon: Icon(Icons.man_3),
                     label: Text('User'),
                   ),
                   NavigationRailDestination(
-                    icon: Icon(Icons.auto_graph_outlined),
+                    selectedIcon: Icon(Icons.auto_graph_outlined),
+                    icon: Icon(Icons.auto_graph_sharp),
                     label: Text('Weight'),
                   ),
                 ],
@@ -93,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               //flex: 1,
               child: Container(
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: Theme.of(context).colorScheme.onPrimary,
                 child: page,
               ),
             ),

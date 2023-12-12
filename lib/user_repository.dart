@@ -25,7 +25,7 @@ class UserRepository {
     if (user != null) {
       return user;
     } else {
-      throw ErrorDescription('NO CURRENT USER IN DB');
+      return User('NO_USER_FOUND', '99', '200', true, true);
     }
   }
 
