@@ -3,11 +3,9 @@ import 'package:mobx/mobx.dart';
 import 'package:open_weight_tracker/main.dart';
 import 'package:open_weight_tracker/models.dart';
 import 'package:validators2/validators2.dart';
-import 'user_repository.dart';
 part 'user_profile_form.g.dart';
 
 class FormStore = _FormStore with _$FormStore;
-UserRepository userRepository = UserRepository();
 
 abstract class _FormStore with Store {
   @observable

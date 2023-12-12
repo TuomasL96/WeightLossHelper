@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:open_weight_tracker/main.dart';
 import 'package:open_weight_tracker/objectbox.g.dart';
 import 'models.dart';
 
 class UserRepository {
-  //User? get(id) => objectBox.userBox.get(id);
+  late User currentUser = getCurrentUserFromDB();
 
   void save(User user) {
     if (getUserByName(user.name) != null) {
@@ -13,11 +14,29 @@ class UserRepository {
     }
   }
 
-  User? getCurrentUser() {
+  void saveMany(List<User> users) {
+    objectBox.userBox.putMany(users);
+  }
+
+  User getCurrentUserFromDB() {
     Query<User> query =
         objectBox.userBox.query(User_.isCurrentUser.equals(true)).build();
     final user = query.findFirst();
-    return user;
+    if (user != null) {
+      return user;
+    } else {
+      throw ErrorDescription('NO CURRENT USER IN DB');
+    }
+  }
+
+  User getCurrentUser() => currentUser;
+
+  void setCurrentUser(User user) {
+    User? oldCurrentUser = currentUser;
+    User newCurrentUser = user;
+    newCurrentUser.isCurrentUser == true;
+    oldCurrentUser.isCurrentUser == false;
+    saveMany([oldCurrentUser, newCurrentUser]);
   }
 
   User? getUserById(int id) => objectBox.userBox.get(id);
@@ -28,6 +47,8 @@ class UserRepository {
     final user = query.findFirst();
     return user;
   }
+
+  List<User> getAllUsers() => objectBox.userBox.getAll();
 
   bool isValidUserName(String userName) {
     if (getUserByName(userName) == null) {

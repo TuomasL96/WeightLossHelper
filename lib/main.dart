@@ -6,8 +6,9 @@ import 'objectbox_store.dart';
 import 'models.dart';
 
 late ObjectBox objectBox;
+UserRepository userRepository = UserRepository();
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   objectBox = await ObjectBox.create();
   runApp(const MyApp());
@@ -22,21 +23,25 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+            onPrimaryContainer: Colors.white,
+            onSecondaryContainer: Colors.deepPurple,
+            onTertiaryContainer: Colors.deepPurpleAccent,
+          ),
           useMaterial3: true,
           inputDecorationTheme: const InputDecorationTheme(
               filled: true,
               fillColor: Colors.white30,
               border: OutlineInputBorder(),
               contentPadding: EdgeInsets.all(8.0))),
-      home: const MyHomePage(),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -49,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = UserProfileCreatorMenu();
+        page = UserMainMenu();
         break;
       case 1:
         page = UserProfileCreatorMenu();
@@ -64,6 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             SafeArea(
               child: NavigationRail(
+                minWidth: 60,
+                minExtendedWidth: 60,
                 extended: constraints.maxWidth >= 800,
                 destinations: const [
                   NavigationRailDestination(
@@ -72,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   NavigationRailDestination(
                     icon: Icon(Icons.auto_graph_outlined),
-                    label: Text('Weight Graph'),
+                    label: Text('Weight'),
                   ),
                 ],
                 selectedIndex: selectedIndex,
@@ -84,6 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Expanded(
+              //flex: 1,
               child: Container(
                 color: Theme.of(context).colorScheme.primaryContainer,
                 child: page,
