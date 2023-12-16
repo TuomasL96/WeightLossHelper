@@ -24,10 +24,11 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.deepPurple,
+            seedColor: Colors.blue,
+            primaryContainer: Colors.blueAccent,
             onPrimaryContainer: Colors.white,
-            onSecondaryContainer: Colors.deepPurple,
-            onTertiaryContainer: Colors.deepPurpleAccent,
+            //onSecondaryContainer: Colors.deepPurple,
+            //onTertiaryContainer: Colors.deepPurpleAccent,
           ),
           useMaterial3: true,
           inputDecorationTheme: const InputDecorationTheme(
@@ -71,20 +72,27 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             SafeArea(
               child: NavigationRail(
-                indicatorColor: Theme.of(context).colorScheme.primaryContainer,
+                indicatorShape: const CircleBorder(),
+                groupAlignment: -1,
+                indicatorColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
                 backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 minWidth: 60,
-                minExtendedWidth: 60,
-                extended: constraints.maxWidth >= 1200,
+                extended: false,
                 destinations: const [
                   NavigationRailDestination(
-                    indicatorColor: Colors.black,
-                    selectedIcon: Icon(Icons.man_3_outlined),
-                    icon: Icon(Icons.man_3),
+                    selectedIcon: Icon(
+                      Icons.man_3_outlined,
+                      color: Colors.blueAccent,
+                    ),
+                    icon: Icon(Icons.man_3_outlined),
                     label: Text('User'),
                   ),
                   NavigationRailDestination(
-                    selectedIcon: Icon(Icons.auto_graph_outlined),
+                    selectedIcon: Icon(
+                      Icons.auto_graph_outlined,
+                      color: Colors.blueAccent,
+                    ),
                     icon: Icon(Icons.auto_graph_sharp),
                     label: Text('Weight'),
                   ),
@@ -98,9 +106,10 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Expanded(
-              //flex: 1,
               child: Container(
-                color: Theme.of(context).colorScheme.onPrimary,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
                 child: page,
               ),
             ),

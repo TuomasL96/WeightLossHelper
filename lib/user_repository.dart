@@ -25,7 +25,18 @@ class UserRepository {
     if (user != null) {
       return user;
     } else {
-      return User('NO_USER_FOUND', '99', '200', true, true);
+      throw ErrorDescription('NO CURRENT USER IN');
+    }
+  }
+
+  bool dbHasCurrentUser() {
+    Query<User?> query =
+        objectBox.userBox.query(User_.isCurrentUser.equals(true)).build();
+    final user = query.findFirst();
+    if (user != null) {
+      return true;
+    } else {
+      return false;
     }
   }
 

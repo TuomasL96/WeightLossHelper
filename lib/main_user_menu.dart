@@ -1,56 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:open_weight_tracker/user_creation_menu.dart';
 import 'package:open_weight_tracker/user_profile_form.dart';
 import 'models.dart';
 import 'user_repository.dart';
 import 'main.dart';
 
 class UserMainMenu extends StatefulWidget {
-  late User currentUser = userRepository.getCurrentUser();
-  UserMainMenu({
+  const UserMainMenu({
     super.key,
   });
 
   @override
-  State<UserMainMenu> createState() => _UserMainMenuState(currentUser);
+  State<UserMainMenu> createState() => _UserMainMenuState();
 }
 
 class _UserMainMenuState extends State<UserMainMenu> {
-  User currentUser;
-  _UserMainMenuState(this.currentUser);
+  late User currentUser = userRepository.getCurrentUser();
+  bool dbHasUser = (userRepository.dbHasCurrentUser() ? true : false);
 
   @override
   Widget build(BuildContext context) {
+    Widget userPage;
+    switch (dbHasUser) {
+      case true:
+        userPage = UserList(
+            currentUser: currentUser, users: userRepository.getAllUsers());
+      case false:
+        userPage = UserProfileCreatorMenu();
+    }
+
     return Container(
-      padding: const EdgeInsets.fromLTRB(2, 5, 2, 20),
+      padding: const EdgeInsets.fromLTRB(2, 10, 2, 20),
       alignment: Alignment.topCenter,
       color: Theme.of(context).colorScheme.onPrimaryContainer,
-      child: Column(
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: UserSmallCard(currentUser),
-              ),
-            ],
-          ),
-          const Text('All users: '),
-          UserList(users: userRepository.getAllUsers())
-        ],
-      ),
+      child: userPage,
     );
   }
 }
 
 class UserList extends StatelessWidget {
-  final List<User> users;
-  UserList({super.key, required this.users});
+  List<User> users;
+  User currentUser;
+  UserList({super.key, required this.currentUser, required this.users});
 
   late List<User> otherUsers = getAllButCurrentUser(users);
 
   List<User> getAllButCurrentUser(users) {
     List<User> otherUsers = [];
-    for (final User user in users) {
+    for (User user in users) {
       if (user.isCurrentUser == false) {
         otherUsers.add(user);
       } //else {
@@ -62,20 +59,25 @@ class UserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: ListView.builder(
-          itemCount: otherUsers.length,
-          itemBuilder: (context, index) {
-            return UserSmallCard(otherUsers[index]);
-          }),
-    );
+    return Column(mainAxisSize: MainAxisSize.min, children: [
+      const Text('Current user'),
+      UserSmallCard(currentUser),
+      const Text('Other Users'),
+      Expanded(
+        flex: 1,
+        child: ListView.builder(
+            itemCount: otherUsers.length,
+            itemBuilder: (context, index) {
+              return UserSmallCard(otherUsers[index]);
+            }),
+      ),
+    ]);
   }
 }
 
 class UserBigCard extends StatefulWidget {
-  final User user;
-  const UserBigCard(this.user, {super.key});
+  User user;
+  UserBigCard(this.user, {super.key});
 
   @override
   State<UserBigCard> createState() => _UserBigCardState();
@@ -109,7 +111,8 @@ class _UserSmallCardState extends State<UserSmallCard> {
   Widget build(BuildContext context) {
     return Card(
       color: Theme.of(context).colorScheme.onPrimaryContainer,
-      shadowColor: Theme.of(context).colorScheme.onSecondaryContainer,
+      shadowColor: Theme.of(context).colorScheme.primaryContainer,
+      elevation: 2.0,
       child: ListTile(
         leading: const Icon(
           Icons.account_circle,
