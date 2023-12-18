@@ -43,7 +43,9 @@ abstract class _FormStore with Store {
     validateHeight(height);
     validateUsername(name);
     if (canLogin) {
-      userRepository.saveUser(User(name, age, height, isMale, false));
+      User newUser = User(name, age, height, isMale, false);
+      userRepository.saveUser(newUser);
+      userRepository.setCurrentUser(newUser);
     } else {
       return;
     }

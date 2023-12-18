@@ -11,7 +11,8 @@ class User {
   String height;
   bool isMale;
   bool isCurrentUser;
-  List<WeighIn>? weighIns;
+  @Backlink('user')
+  final weighIns = ToMany<WeighIn>();
 
   User(this.name, this.age, this.height, this.isMale, this.isCurrentUser,
       {this.id = 0});
@@ -22,6 +23,7 @@ class WeighIn {
   int? id;
   double weight;
   DateTime date;
+  final user = ToOne<User>();
 
   WeighIn(this.date, this.weight, {this.id = 0});
 }

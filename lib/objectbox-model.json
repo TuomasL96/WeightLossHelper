@@ -46,7 +46,7 @@
     },
     {
       "id": "3:1723373375053619985",
-      "lastPropertyId": "3:5753252445663334873",
+      "lastPropertyId": "4:7475324059686349406",
       "name": "WeighIn",
       "properties": [
         {
@@ -64,13 +64,21 @@
           "id": "3:5753252445663334873",
           "name": "date",
           "type": 10
+        },
+        {
+          "id": "4:7475324059686349406",
+          "name": "userId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:4017141251128035371",
+          "relationTarget": "User"
         }
       ],
       "relations": []
     }
   ],
   "lastEntityId": "3:1723373375053619985",
-  "lastIndexId": "1:5948996937025164935",
+  "lastIndexId": "2:4017141251128035371",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

@@ -115,19 +115,3 @@ class _UserWeightInputFieldState extends State<UserWeightInputField> {
         ));
   }
 }
-
-/* class WeightPicker extends StatelessWidget {
-  late DateTime date;
-  late Float weight;
-
-  WeightPicker({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const Card(
-      elevation: 2.0,
-      child: ListTile(
-        title: Column(children: [DatePickerButton()]),
-      ),
-    );
-  }
-} */

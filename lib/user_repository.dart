@@ -7,11 +7,7 @@ class UserRepository {
   late User currentUser = getCurrentUserFromDB();
 
   void saveUser(User user) {
-    if (getUserByName(user.name) != null) {
-      throw Error();
-    } else {
-      objectBox.userBox.put(user);
-    }
+    objectBox.userBox.put(user);
   }
 
   void saveManyUsers(List<User> users) {
@@ -70,7 +66,9 @@ class UserRepository {
   }
 
   void saveWeighIn(DateTime date, double weight) {
-    currentUser.weighIns!.add(WeighIn(date, weight));
+    User user = getCurrentUser();
+    user.weighIns.add(WeighIn(date, weight));
+    saveUser(user);
   }
 }
 // docker run --rm -it --volume F:\"System User folders"\Tiedostot\weight_loss_obx-store:/db --publish 8081:8081 objectboxio/admin:latest
