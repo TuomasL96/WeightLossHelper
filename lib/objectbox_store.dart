@@ -6,12 +6,12 @@ import 'objectbox.g.dart'; // created by `flutter pub run build_runner build`
 class ObjectBox {
   late final Store store;
   late final Box<User> userBox;
-  late final Box<WeightIn> weightInBox;
+  late final Box<WeighIn> weighInBox;
 
   ObjectBox._create(this.store) {
     // Add any additional setup code, e.g. build queries.
     userBox = Box<User>(store);
-    weightInBox = Box<WeightIn>(store);
+    weighInBox = Box<WeighIn>(store);
   }
 
   /// Create an instance of ObjectBox to use throughout the app.

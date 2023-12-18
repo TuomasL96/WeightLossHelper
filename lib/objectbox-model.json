@@ -45,23 +45,23 @@
       "relations": []
     },
     {
-      "id": "2:1074535499665101775",
-      "lastPropertyId": "4:482311869975241290",
-      "name": "WeightIn",
+      "id": "3:1723373375053619985",
+      "lastPropertyId": "3:5753252445663334873",
+      "name": "WeighIn",
       "properties": [
         {
-          "id": "1:2256125015988663197",
+          "id": "1:1411480714418207073",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "3:3567051800736879791",
+          "id": "2:6064112572340659001",
           "name": "weight",
-          "type": 6
+          "type": 8
         },
         {
-          "id": "4:482311869975241290",
+          "id": "3:5753252445663334873",
           "name": "date",
           "type": 10
         }
@@ -69,17 +69,22 @@
       "relations": []
     }
   ],
-  "lastEntityId": "2:1074535499665101775",
+  "lastEntityId": "3:1723373375053619985",
   "lastIndexId": "1:5948996937025164935",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
+  "retiredEntityUids": [
+    1074535499665101775
+  ],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
     5070672748237897417,
-    8752628193005041138
+    8752628193005041138,
+    2256125015988663197,
+    3567051800736879791,
+    482311869975241290
   ],
   "retiredRelationUids": [],
   "version": 1

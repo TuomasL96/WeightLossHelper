@@ -11,19 +11,17 @@ class User {
   String height;
   bool isMale;
   bool isCurrentUser;
-  List<WeightIn>? weightIns;
+  List<WeighIn>? weighIns;
 
   User(this.name, this.age, this.height, this.isMale, this.isCurrentUser,
       {this.id = 0});
 }
 
 @Entity()
-class WeightIn {
+class WeighIn {
   int? id;
-  int weight;
-
-  @Property(type: PropertyType.date)
+  double weight;
   DateTime date;
 
-  WeightIn(this.weight, this.date, {this.id = 0});
+  WeighIn(this.date, this.weight, {this.id = 0});
 }

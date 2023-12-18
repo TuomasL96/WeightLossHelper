@@ -6,7 +6,7 @@ import 'models.dart';
 class UserRepository {
   late User currentUser = getCurrentUserFromDB();
 
-  void save(User user) {
+  void saveUser(User user) {
     if (getUserByName(user.name) != null) {
       throw Error();
     } else {
@@ -14,7 +14,7 @@ class UserRepository {
     }
   }
 
-  void saveMany(List<User> users) {
+  void saveManyUsers(List<User> users) {
     objectBox.userBox.putMany(users);
   }
 
@@ -47,7 +47,7 @@ class UserRepository {
     User newCurrentUser = user;
     newCurrentUser.isCurrentUser == true;
     oldCurrentUser.isCurrentUser == false;
-    saveMany([oldCurrentUser, newCurrentUser]);
+    saveManyUsers([oldCurrentUser, newCurrentUser]);
   }
 
   User? getUserById(int id) => objectBox.userBox.get(id);
@@ -67,6 +67,10 @@ class UserRepository {
     } else {
       return false;
     }
+  }
+
+  void saveWeighIn(DateTime date, double weight) {
+    currentUser.weighIns!.add(WeighIn(date, weight));
   }
 }
 // docker run --rm -it --volume F:\"System User folders"\Tiedostot\weight_loss_obx-store:/db --publish 8081:8081 objectboxio/admin:latest

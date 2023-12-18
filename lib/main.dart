@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_weight_tracker/user_repository.dart';
+import 'package:open_weight_tracker/weigh_in_menu.dart';
 import 'user_creation_menu.dart';
 import 'main_user_menu.dart';
 import 'objectbox_store.dart';
@@ -55,11 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
     Widget page;
     switch (selectedIndex) {
       case 0:
-        page = UserMainMenu();
+        page = const UserMainMenu();
         break;
       case 1:
         page = UserProfileCreatorMenu();
         break;
+      case 2:
+        page = const WeightInForm();
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -93,7 +96,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       Icons.auto_graph_outlined,
                       color: Colors.blueAccent,
                     ),
-                    icon: Icon(Icons.auto_graph_sharp),
+                    icon: Icon(Icons.auto_graph_outlined),
+                    label: Text('Graphs'),
+                  ),
+                  NavigationRailDestination(
+                    selectedIcon: Icon(
+                      Icons.scale_outlined,
+                      color: Colors.blueAccent,
+                    ),
+                    icon: Icon(Icons.scale_outlined),
                     label: Text('Weight'),
                   ),
                 ],

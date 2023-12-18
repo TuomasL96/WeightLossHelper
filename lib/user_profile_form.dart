@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'package:mobx/mobx.dart';
 import 'package:open_weight_tracker/main.dart';
 import 'package:open_weight_tracker/models.dart';
@@ -44,7 +43,7 @@ abstract class _FormStore with Store {
     validateHeight(height);
     validateUsername(name);
     if (canLogin) {
-      userRepository.save(User(name, age, height, isMale, false));
+      userRepository.saveUser(User(name, age, height, isMale, false));
     } else {
       return;
     }
