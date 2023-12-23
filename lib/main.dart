@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = UserProfileCreatorMenu();
         break;
       case 2:
-        page = const WeightInForm();
+        page = WeighInMenu();
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }

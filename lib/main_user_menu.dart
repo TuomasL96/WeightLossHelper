@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_weight_tracker/user_creation_menu.dart';
-import 'package:open_weight_tracker/user_profile_form.dart';
 import 'models.dart';
-import 'user_repository.dart';
 import 'main.dart';
 
 class UserMainMenu extends StatefulWidget {
@@ -75,6 +73,7 @@ class UserList extends StatelessWidget {
   }
 }
 
+// TODO
 class UserBigCard extends StatefulWidget {
   User user;
   UserBigCard(this.user, {super.key});
