@@ -68,7 +68,7 @@ class _WeighInCardState extends State<WeighInCard> {
           Text("${widget.weighIn.date.toLocal()}".split(' ')[0]),
         ]),
         subtitle: Text('${widget.weighIn.weight}'),
-        trailing: const Icon(Icons.more_vert),
+        trailing: const Icon(Icons.edit),
       ),
     );
   }
@@ -186,5 +186,12 @@ class _UserWeightInputFieldState extends State<UserWeightInputField> {
             hintText: 'Your Weight',
           )),
     );
+  }
+}
+
+class WeighInEditCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card();
   }
 }
