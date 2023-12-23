@@ -1,7 +1,7 @@
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'models.dart';
-import 'objectbox.g.dart'; // created by `flutter pub run build_runner build`
+import 'generated/objectbox.g.dart'; // created by `flutter pub run build_runner build`
 
 class ObjectBox {
   late final Store store;

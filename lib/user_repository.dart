@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:open_weight_tracker/main.dart';
-import 'package:open_weight_tracker/objectbox.g.dart';
+import 'package:open_weight_tracker/generated/objectbox.g.dart';
 import 'models.dart';
 
 class UserRepository {

@@ -2,7 +2,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:open_weight_tracker/main.dart';
-part 'weigh_in_form.g.dart';
+part 'generated/weigh_in_form.g.dart';
 
 class WeightFormStore = _WeightFormStore with _$WeightFormStore;
 

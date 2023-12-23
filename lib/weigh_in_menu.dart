@@ -65,8 +65,7 @@ class _WeighInCardState extends State<WeighInCard> {
           size: 50,
         ),
         title: Row(children: [
-          Text('${widget.weighIn.date}'),
-          //Text('${widget.weighIn.weight}')
+          Text("${widget.weighIn.date.toLocal()}".split(' ')[0]),
         ]),
         subtitle: Text('${widget.weighIn.weight}'),
         trailing: const Icon(Icons.more_vert),
