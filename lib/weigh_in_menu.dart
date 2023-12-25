@@ -190,6 +190,9 @@ class _UserWeightInputFieldState extends State<UserWeightInputField> {
 }
 
 class WeighInEditCard extends StatelessWidget {
+  final WeighIn weighIn;
+  const WeighInEditCard(this.weighIn, {super.key});
+
   @override
   Widget build(BuildContext context) {
     return Card();
