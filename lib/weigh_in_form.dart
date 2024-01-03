@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:open_weight_tracker/main.dart';
+import 'package:open_weight_tracker/models.dart';
 part 'generated/weigh_in_form.g.dart';
 
 class WeightFormStore = _WeightFormStore with _$WeightFormStore;
@@ -36,8 +37,8 @@ abstract class _WeightFormStore with Store {
 
   @action
   void validateWeight(double value) {
-    if (value == 0.0) {
-      throw ErrorDescription('Weight cant be 0');
+    if (value.isNegative) {
+      throw ErrorDescription('Weight cant be negative');
     }
   }
 
@@ -51,7 +52,7 @@ abstract class _WeightFormStore with Store {
     validateDate(date);
     validateWeight(weight);
     if (canSubmit) {
-      userRepository.saveWeighIn(date, weight);
+      userRepository.saveWeighIn(WeighIn(date, weight));
     } else {
       throw ErrorDescription('validation fail');
     }

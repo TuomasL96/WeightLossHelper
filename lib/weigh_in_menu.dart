@@ -10,6 +10,8 @@ class WeighInMenu extends StatelessWidget {
   late User currentUser = userRepository.getCurrentUser();
   WeighInMenu({super.key});
 
+  void openEditMenu() {}
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -68,9 +70,44 @@ class _WeighInCardState extends State<WeighInCard> {
           Text("${widget.weighIn.date.toLocal()}".split(' ')[0]),
         ]),
         subtitle: Text('${widget.weighIn.weight}'),
-        trailing: const Icon(Icons.edit),
+        trailing: const WeighInCardPopup(),
       ),
     );
+  }
+}
+
+PopupMenuItem _buildWeighInPopupMenuItem(String title, IconData iconData) {
+  return PopupMenuItem(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Icon(
+          iconData,
+          color: Colors.black,
+        ),
+        Text(title),
+      ],
+    ),
+  );
+}
+
+class WeighInCardPopup extends StatelessWidget {
+  const WeighInCardPopup({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(8.0),
+              bottomRight: Radius.circular(8.0),
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0)),
+        ),
+        itemBuilder: (ctx) => [
+              _buildWeighInPopupMenuItem('Edit', Icons.edit),
+              _buildWeighInPopupMenuItem('Delete', Icons.delete),
+            ]);
   }
 }
 

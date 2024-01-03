@@ -65,9 +65,9 @@ class UserRepository {
     }
   }
 
-  void saveWeighIn(DateTime date, double weight) {
+  void saveWeighIn(WeighIn weighIn) {
     User user = getCurrentUser();
-    user.weighIns.add(WeighIn(date, weight));
+    user.weighIns.add(weighIn);
     saveUser(user);
   }
 }
