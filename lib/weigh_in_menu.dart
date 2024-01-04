@@ -24,9 +24,18 @@ class WeighInMenu extends StatelessWidget {
   }
 }
 
-class WeighInList extends StatelessWidget {
+class WeighInList extends StatefulWidget {
   User currentUser;
   WeighInList({required this.currentUser, super.key});
+
+  @override
+  State<WeighInList> createState() => _WeighInListState();
+}
+
+class _WeighInListState extends State<WeighInList> {
+  void onChildUpdated() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +46,10 @@ class WeighInList extends StatelessWidget {
         Expanded(
             flex: 1,
             child: ListView.builder(
-                itemCount: currentUser.weighIns.length,
+                itemCount: widget.currentUser.weighIns.length,
                 itemBuilder: (context, index) {
-                  return WeighInCard(currentUser.weighIns[index]);
+                  return WeighInCard(
+                      widget.currentUser.weighIns[index], onChildUpdated);
                 }))
       ],
     );
@@ -48,7 +58,8 @@ class WeighInList extends StatelessWidget {
 
 class WeighInCard extends StatefulWidget {
   final WeighIn weighIn;
-  const WeighInCard(this.weighIn, {super.key});
+  final Function onUpdated;
+  const WeighInCard(this.weighIn, this.onUpdated, {super.key});
 
   @override
   State<WeighInCard> createState() => _WeighInCardState();
@@ -70,14 +81,16 @@ class _WeighInCardState extends State<WeighInCard> {
           Text("${widget.weighIn.date.toLocal()}".split(' ')[0]),
         ]),
         subtitle: Text('${widget.weighIn.weight}'),
-        trailing: const WeighInCardPopup(),
+        trailing: WeighInCardPopup(widget.weighIn, widget.onUpdated),
       ),
     );
   }
 }
 
-PopupMenuItem _buildWeighInPopupMenuItem(String title, IconData iconData) {
+PopupMenuItem _buildWeighInPopupMenuItem(
+    String title, IconData iconData, onTap) {
   return PopupMenuItem(
+    onTap: onTap,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -92,7 +105,9 @@ PopupMenuItem _buildWeighInPopupMenuItem(String title, IconData iconData) {
 }
 
 class WeighInCardPopup extends StatelessWidget {
-  const WeighInCardPopup({super.key});
+  final WeighIn weighIn;
+  final Function onUpdated;
+  const WeighInCardPopup(this.weighIn, this.onUpdated, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +120,22 @@ class WeighInCardPopup extends StatelessWidget {
               topRight: Radius.circular(8.0)),
         ),
         itemBuilder: (ctx) => [
-              _buildWeighInPopupMenuItem('Edit', Icons.edit),
-              _buildWeighInPopupMenuItem('Delete', Icons.delete),
+              _buildWeighInPopupMenuItem(
+                  'Edit',
+                  Icons.edit, // TODO edit code
+                  () => {
+                        userRepository.deleteWeighIn(
+                            userRepository.currentUser, weighIn),
+                        onUpdated()
+                      }),
+              _buildWeighInPopupMenuItem(
+                  'Delete',
+                  Icons.delete,
+                  () => {
+                        userRepository.deleteWeighIn(
+                            userRepository.currentUser, weighIn),
+                        onUpdated()
+                      }),
             ]);
   }
 }

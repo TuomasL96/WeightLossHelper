@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:open_weight_tracker/main.dart';
 import 'package:open_weight_tracker/generated/objectbox.g.dart';
@@ -65,10 +67,17 @@ class UserRepository {
     }
   }
 
-  void saveWeighIn(WeighIn weighIn) {
-    User user = getCurrentUser();
+  void saveWeighIn(User user, WeighIn weighIn) {
     user.weighIns.add(weighIn);
     saveUser(user);
   }
+
+  void deleteWeighIn(User user, WeighIn weighIn) {
+    user.weighIns.remove(weighIn);
+    saveUser(user);
+  }
 }
+
+
+
 // docker run --rm -it --volume F:\"System User folders"\Tiedostot\weight_loss_obx-store:/db --publish 8081:8081 objectboxio/admin:latest

@@ -52,7 +52,8 @@ abstract class _WeightFormStore with Store {
     validateDate(date);
     validateWeight(weight);
     if (canSubmit) {
-      userRepository.saveWeighIn(WeighIn(date, weight));
+      userRepository.saveWeighIn(
+          userRepository.getCurrentUser(), WeighIn(date, weight));
     } else {
       throw ErrorDescription('validation fail');
     }
