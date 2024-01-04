@@ -67,7 +67,7 @@ class UserRepository {
     }
   }
 
-  void saveWeighIn(User user, WeighIn weighIn) {
+  void addWeighIn(User user, WeighIn weighIn) {
     user.weighIns.add(weighIn);
     saveUser(user);
   }

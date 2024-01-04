@@ -19,6 +19,10 @@ abstract class _WeightFormStore with Store {
   @computed
   bool get canSubmit => !error.hasErrors;
 
+  @observable
+  late final userWeighIns =
+      ObservableList<WeighIn>.of(userRepository.currentUser.weighIns);
+
   late List<ReactionDisposer> _disposers;
 
   void setupValidations() {
@@ -26,6 +30,20 @@ abstract class _WeightFormStore with Store {
       reaction((_) => date, validateDate),
       reaction((_) => weight, validateWeight),
     ];
+  }
+
+  @action
+  void deleteWeighIn(WeighIn weighIn) {
+    // this below is dumb, adding / removing from 2 lists
+    userWeighIns.remove(weighIn);
+    userRepository.deleteWeighIn(userRepository.currentUser, weighIn);
+  }
+
+  @action
+  void addWeighIn(WeighIn weighIn) {
+    // this below is dumb, adding / removing from 2 lists
+    userWeighIns.add(weighIn);
+    userRepository.addWeighIn(userRepository.currentUser, weighIn);
   }
 
   @action
@@ -52,8 +70,7 @@ abstract class _WeightFormStore with Store {
     validateDate(date);
     validateWeight(weight);
     if (canSubmit) {
-      userRepository.saveWeighIn(
-          userRepository.getCurrentUser(), WeighIn(date, weight));
+      addWeighIn(WeighIn(date, weight));
     } else {
       throw ErrorDescription('validation fail');
     }

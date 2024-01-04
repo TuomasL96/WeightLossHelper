@@ -1,4 +1,7 @@
 import 'dart:ffi';
+import 'package:mobx/mobx.dart';
+import 'package:open_weight_tracker/generated/objectbox.g.dart';
+
 import 'main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,19 +9,37 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:open_weight_tracker/models.dart';
 import 'weigh_in_form.dart';
 
-class WeighInMenu extends StatelessWidget {
-  late User currentUser = userRepository.getCurrentUser();
-  WeighInMenu({super.key});
+class WeighInMenu extends StatefulWidget {
+  const WeighInMenu({super.key});
 
-  void openEditMenu() {}
+  @override
+  State<WeighInMenu> createState() => _WeighInMenuState();
+}
+
+class _WeighInMenuState extends State<WeighInMenu> {
+  late User currentUser = userRepository.getCurrentUser();
+
+  final WeightFormStore store = WeightFormStore();
+
+  @override
+  void initState() {
+    super.initState();
+    store.setupValidations();
+  }
+
+  @override
+  void dispose() {
+    store.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Expanded(child: WeighInForm()),
-        Expanded(child: WeighInList(currentUser: currentUser))
+        Expanded(child: WeighInForm(store)),
+        Expanded(child: WeighInList(currentUser: currentUser, store: store))
       ],
     );
   }
@@ -26,7 +47,8 @@ class WeighInMenu extends StatelessWidget {
 
 class WeighInList extends StatefulWidget {
   User currentUser;
-  WeighInList({required this.currentUser, super.key});
+  final WeightFormStore store;
+  WeighInList({required this.currentUser, required this.store, super.key});
 
   @override
   State<WeighInList> createState() => _WeighInListState();
@@ -45,12 +67,14 @@ class _WeighInListState extends State<WeighInList> {
         const Text('Weight History'),
         Expanded(
             flex: 1,
-            child: ListView.builder(
-                itemCount: widget.currentUser.weighIns.length,
-                itemBuilder: (context, index) {
-                  return WeighInCard(
-                      widget.currentUser.weighIns[index], onChildUpdated);
-                }))
+            child: Observer(
+              builder: (context) => ListView.builder(
+                  itemCount: widget.store.userWeighIns.length,
+                  itemBuilder: (context, index) {
+                    return WeighInCard(
+                        widget.store.userWeighIns[index], widget.store);
+                  }),
+            ))
       ],
     );
   }
@@ -58,8 +82,8 @@ class _WeighInListState extends State<WeighInList> {
 
 class WeighInCard extends StatefulWidget {
   final WeighIn weighIn;
-  final Function onUpdated;
-  const WeighInCard(this.weighIn, this.onUpdated, {super.key});
+  final WeightFormStore store;
+  const WeighInCard(this.weighIn, this.store, {super.key});
 
   @override
   State<WeighInCard> createState() => _WeighInCardState();
@@ -81,7 +105,7 @@ class _WeighInCardState extends State<WeighInCard> {
           Text("${widget.weighIn.date.toLocal()}".split(' ')[0]),
         ]),
         subtitle: Text('${widget.weighIn.weight}'),
-        trailing: WeighInCardPopup(widget.weighIn, widget.onUpdated),
+        trailing: WeighInCardPopup(widget.weighIn, widget.store),
       ),
     );
   }
@@ -106,8 +130,8 @@ PopupMenuItem _buildWeighInPopupMenuItem(
 
 class WeighInCardPopup extends StatelessWidget {
   final WeighIn weighIn;
-  final Function onUpdated;
-  const WeighInCardPopup(this.weighIn, this.onUpdated, {super.key});
+  final WeightFormStore store;
+  const WeighInCardPopup(this.weighIn, this.store, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -124,44 +148,27 @@ class WeighInCardPopup extends StatelessWidget {
                   'Edit',
                   Icons.edit, // TODO edit code
                   () => {
-                        userRepository.deleteWeighIn(
-                            userRepository.currentUser, weighIn),
-                        onUpdated()
+                        store.deleteWeighIn(weighIn),
                       }),
               _buildWeighInPopupMenuItem(
                   'Delete',
                   Icons.delete,
                   () => {
-                        userRepository.deleteWeighIn(
-                            userRepository.currentUser, weighIn),
-                        onUpdated()
+                        store.deleteWeighIn(weighIn),
                       }),
             ]);
   }
 }
 
 class WeighInForm extends StatefulWidget {
-  const WeighInForm({super.key});
+  final WeightFormStore store;
+  const WeighInForm(this.store, {super.key});
 
   @override
   State<WeighInForm> createState() => _WeighInFormState();
 }
 
 class _WeighInFormState extends State<WeighInForm> {
-  final WeightFormStore store = WeightFormStore();
-
-  @override
-  void initState() {
-    super.initState();
-    store.setupValidations();
-  }
-
-  @override
-  void dispose() {
-    store.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -170,11 +177,11 @@ class _WeighInFormState extends State<WeighInForm> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Observer(builder: (_) => DatePickerButton(store)),
-          Observer(builder: (_) => UserWeightInputField(store)),
+          Observer(builder: (_) => DatePickerButton(widget.store)),
+          Observer(builder: (_) => UserWeightInputField(widget.store)),
           const SizedBox(height: 16),
           ElevatedButton(
-              onPressed: store.validateAll, child: const Text('Save')),
+              onPressed: widget.store.validateAll, child: const Text('Save')),
           const SizedBox(height: 16),
         ],
       ),
