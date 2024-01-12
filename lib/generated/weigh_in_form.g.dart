@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../weigh_in_form.dart';
+part of '../mobx/weigh_in_form.dart';
 
 // **************************************************************************
 // StoreGenerator

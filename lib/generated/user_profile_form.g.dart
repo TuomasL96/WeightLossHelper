@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../user_profile_form.dart';
+part of '../mobx/user_profile_form.dart';
 
 // **************************************************************************
 // StoreGenerator

@@ -1,13 +1,9 @@
-import 'dart:ffi';
-import 'package:mobx/mobx.dart';
-import 'package:open_weight_tracker/generated/objectbox.g.dart';
-
 import 'main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:open_weight_tracker/models.dart';
-import 'weigh_in_form.dart';
+import '../mobx/weigh_in_form.dart';
 import 'shared_widgets.dart';
 
 class WeighInMenu extends StatefulWidget {
