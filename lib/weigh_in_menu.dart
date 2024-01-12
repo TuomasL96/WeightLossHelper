@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:open_weight_tracker/models.dart';
 import 'weigh_in_form.dart';
+import 'shared_widgets.dart';
 
 class WeighInMenu extends StatefulWidget {
   const WeighInMenu({super.key});
@@ -111,23 +112,6 @@ class _WeighInCardState extends State<WeighInCard> {
   }
 }
 
-PopupMenuItem _buildWeighInPopupMenuItem(
-    String title, IconData iconData, onTap) {
-  return PopupMenuItem(
-    onTap: onTap,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Icon(
-          iconData,
-          color: Colors.black,
-        ),
-        Text(title),
-      ],
-    ),
-  );
-}
-
 class WeighInCardPopup extends StatelessWidget {
   final WeighIn weighIn;
   final WeightFormStore store;
@@ -144,13 +128,13 @@ class WeighInCardPopup extends StatelessWidget {
               topRight: Radius.circular(8.0)),
         ),
         itemBuilder: (ctx) => [
-              _buildWeighInPopupMenuItem(
+              buildPopupMenuItem(
                   'Edit',
                   Icons.edit, // TODO edit code
                   () => {
                         store.deleteWeighIn(weighIn),
                       }),
-              _buildWeighInPopupMenuItem(
+              buildPopupMenuItem(
                   'Delete',
                   Icons.delete,
                   () => {

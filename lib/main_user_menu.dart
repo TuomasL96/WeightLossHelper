@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:open_weight_tracker/user_creation_menu.dart';
 import 'models.dart';
 import 'main.dart';
+import 'shared_widgets.dart';
 
 class UserMainMenu extends StatefulWidget {
   const UserMainMenu({
@@ -73,22 +76,6 @@ class UserList extends StatelessWidget {
   }
 }
 
-// TODO
-class UserBigCard extends StatefulWidget {
-  User user;
-  UserBigCard(this.user, {super.key});
-
-  @override
-  State<UserBigCard> createState() => _UserBigCardState();
-}
-
-class _UserBigCardState extends State<UserBigCard> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.all(6));
-  }
-}
-
 class UserSmallCard extends StatefulWidget {
   final User user;
   const UserSmallCard(this.user, {super.key});
@@ -125,8 +112,38 @@ class _UserSmallCardState extends State<UserSmallCard> {
           )
         ]),
         subtitle: Text('Height: ${widget.user.height} Weight: TBI BMI: TBI '),
-        trailing: const Icon(Icons.more_vert),
+        trailing: const UserCardPopup(),
       ),
     );
+  }
+}
+
+class UserCardPopup extends StatelessWidget {
+  const UserCardPopup({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(8.0),
+              bottomRight: Radius.circular(8.0),
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0)),
+        ),
+        itemBuilder: (ctx) => [
+              buildPopupMenuItem(
+                  'Edit',
+                  Icons.edit, // TODO edit code
+                  () => {
+                        //todo,
+                      }),
+              buildPopupMenuItem(
+                  'Delete',
+                  Icons.delete,
+                  () => {
+                        //todo,
+                      }),
+            ]);
   }
 }
