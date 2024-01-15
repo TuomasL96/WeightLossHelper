@@ -69,7 +69,7 @@ class UserRepository {
 
   void addWeighIn(User user, WeighIn weighIn) {
     user.weighIns.add(weighIn);
-    sortWeighInsByDate(currentUser);
+    getWeighInsSortedByDate(currentUser);
     saveUser(user);
   }
 
@@ -78,7 +78,7 @@ class UserRepository {
     saveUser(user);
   }
 
-  List<WeighIn> sortWeighInsByDate(User user) {
+  List<WeighIn> getWeighInsSortedByDate(User user) {
     List<WeighIn> weighIns = user.weighIns;
     weighIns.sort((a, b) {
       return a.date.compareTo(b.date);

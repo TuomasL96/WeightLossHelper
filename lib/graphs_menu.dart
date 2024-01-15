@@ -31,7 +31,10 @@ class ChartCard extends Card {
   Widget? get child => Container(
         padding: const EdgeInsets.all(20),
         child: Row(
-          children: [WeightChart(userRepository.currentUser.weighIns)],
+          children: [
+            WeightChart(userRepository
+                .getWeighInsSortedByDate(userRepository.currentUser))
+          ],
         ),
       );
 }
@@ -45,12 +48,12 @@ class WeightChart extends StatelessWidget {
       getTitlesWidget: (value, meta) {
         String text = '';
         final DateTime date =
-            DateTime.fromMicrosecondsSinceEpoch(value.toInt());
+            DateTime.fromMillisecondsSinceEpoch(value.toInt());
         text = DateFormat.MMMd().format(date);
         return Text(
           text,
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 10,
           ),
         );
       });
@@ -59,7 +62,7 @@ class WeightChart extends StatelessWidget {
       showTitles: true,
       getTitlesWidget: (value, meta) {
         String text = '';
-        text = '$value Kg';
+        text = value.toString();
         return Text(
           text,
           style: const TextStyle(
@@ -71,10 +74,9 @@ class WeightChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.5,
-      child: LineChart(
-        LineChartData(
-          minX: weighIns[0].date.millisecondsSinceEpoch.toDouble(),
+        aspectRatio: 1.5,
+        child: LineChart(LineChartData(
+          minX: weighIns.first.date.millisecondsSinceEpoch.toDouble(),
           maxX: weighIns.last.date.millisecondsSinceEpoch.toDouble(),
           borderData: FlBorderData(
               border: const Border(bottom: BorderSide(), left: BorderSide())),
@@ -98,9 +100,49 @@ class WeightChart extends StatelessWidget {
                 ),
                 color: Colors.blue),
           ],
-        ),
-        duration: const Duration(milliseconds: 250),
-      ),
-    );
+          lineTouchData: LineTouchData(
+              enabled: true,
+              touchCallback:
+                  (FlTouchEvent event, LineTouchResponse? touchResponse) {
+                // TODO : Utilize touch event here to perform any operation
+              },
+              touchTooltipData: LineTouchTooltipData(
+                tooltipBgColor: Colors.blue,
+                tooltipRoundedRadius: 20.0,
+                showOnTopOfTheChartBoxArea: false,
+                fitInsideHorizontally: false,
+                fitInsideVertically: false,
+                tooltipMargin: 0,
+                getTooltipItems: (touchedSpots) {
+                  return touchedSpots.map(
+                    (LineBarSpot touchedSpot) {
+                      const textStyle = TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      );
+                      return LineTooltipItem(
+                        '${DateFormat.MMMd().format(weighIns[touchedSpot.spotIndex].date)} \n${weighIns[touchedSpot.spotIndex].weight.toStringAsFixed(2)} Kg',
+                        textStyle,
+                      );
+                    },
+                  ).toList();
+                },
+              ),
+              getTouchedSpotIndicator:
+                  (LineChartBarData barData, List<int> indicators) {
+                return indicators.map(
+                  (int index) {
+                    const line = FlLine(
+                        color: Colors.grey, strokeWidth: 1, dashArray: [2, 4]);
+                    return const TouchedSpotIndicatorData(
+                      line,
+                      FlDotData(show: false),
+                    );
+                  },
+                ).toList();
+              },
+              getTouchLineEnd: (_, __) => double.infinity),
+        )));
   }
 }
