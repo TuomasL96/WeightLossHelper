@@ -23,7 +23,7 @@ class UserRepository {
     if (user != null) {
       return user;
     } else {
-      throw ErrorDescription('NO CURRENT USER IN');
+      throw ErrorDescription('NO CURRENT USER IN DB');
     }
   }
 
@@ -76,6 +76,8 @@ class UserRepository {
     user.weighIns.remove(weighIn);
     saveUser(user);
   }
+
+  void getWeighInPointData() {}
 }
 
 

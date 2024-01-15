@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:open_weight_tracker/models.dart';
 import '../mobx/weigh_in_form.dart';
-import 'shared_widgets.dart';
+import 'widgets/shared_widgets.dart';
 
 class WeighInMenu extends StatefulWidget {
   const WeighInMenu({super.key});

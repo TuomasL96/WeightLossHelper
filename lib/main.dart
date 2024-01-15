@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:open_weight_tracker/graphs_menu.dart';
 import 'package:open_weight_tracker/user_repository.dart';
 import 'package:open_weight_tracker/weigh_in_menu.dart';
 import 'user_creation_menu.dart';
@@ -59,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = const UserMainMenu();
         break;
       case 1:
-        page = UserProfileCreatorMenu();
+        page = const GraphsMenu();
         break;
       case 2:
         page = WeighInMenu();

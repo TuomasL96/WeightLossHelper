@@ -42,6 +42,7 @@ dependencies:
   objectbox_flutter_libs: any
   path: ^1.8.3
   path_provider: ^2.1.1
+  fl_chart: ^0.66.0
 
 dev_dependencies:
   flutter_test:

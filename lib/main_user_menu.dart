@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:open_weight_tracker/user_creation_menu.dart';
 import 'models.dart';
 import 'main.dart';
-import 'shared_widgets.dart';
+import 'widgets/shared_widgets.dart';
 
 class UserMainMenu extends StatefulWidget {
   const UserMainMenu({
