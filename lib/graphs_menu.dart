@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:open_weight_tracker/main.dart';
@@ -37,18 +40,48 @@ class WeightChart extends StatelessWidget {
   final List<WeighIn> weighIns;
   const WeightChart(this.weighIns, {super.key});
 
+  SideTitles get _bottomTitles => SideTitles(
+      showTitles: true,
+      getTitlesWidget: (value, meta) {
+        String text = '';
+        final DateTime date =
+            DateTime.fromMicrosecondsSinceEpoch(value.toInt());
+        text = DateFormat.MMMd().format(date);
+        return Text(
+          text,
+          style: const TextStyle(
+            fontSize: 12,
+          ),
+        );
+      });
+
+  SideTitles get _leftTitles => SideTitles(
+      showTitles: true,
+      getTitlesWidget: (value, meta) {
+        String text = '';
+        text = '$value Kg';
+        return Text(
+          text,
+          style: const TextStyle(
+            fontSize: 8,
+          ),
+        );
+      });
+
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1.5,
       child: LineChart(
         LineChartData(
+          minX: weighIns[0].date.millisecondsSinceEpoch.toDouble(),
+          maxX: weighIns.last.date.millisecondsSinceEpoch.toDouble(),
           borderData: FlBorderData(
               border: const Border(bottom: BorderSide(), left: BorderSide())),
           gridData: const FlGridData(show: false),
-          titlesData: const FlTitlesData(
-            bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          titlesData: FlTitlesData(
+            bottomTitles: AxisTitles(sideTitles: _bottomTitles),
+            leftTitles: AxisTitles(sideTitles: _leftTitles),
             topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
             rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           ),
@@ -56,7 +89,8 @@ class WeightChart extends StatelessWidget {
             LineChartBarData(
                 spots: weighIns
                     .map((weighIn) => FlSpot(
-                        weighIns.indexOf(weighIn).toDouble(), weighIn.weight))
+                        weighIn.date.millisecondsSinceEpoch.toDouble(),
+                        weighIn.weight))
                     .toList(),
                 isCurved: false,
                 dotData: const FlDotData(

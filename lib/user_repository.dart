@@ -69,6 +69,7 @@ class UserRepository {
 
   void addWeighIn(User user, WeighIn weighIn) {
     user.weighIns.add(weighIn);
+    sortWeighInsByDate(currentUser);
     saveUser(user);
   }
 
@@ -77,9 +78,14 @@ class UserRepository {
     saveUser(user);
   }
 
-  void getWeighInPointData() {}
+  List<WeighIn> sortWeighInsByDate(User user) {
+    List<WeighIn> weighIns = user.weighIns;
+    weighIns.sort((a, b) {
+      return a.date.compareTo(b.date);
+    });
+    return weighIns;
+  }
 }
-
 
 
 // docker run --rm -it --volume F:\"System User folders"\Tiedostot\weight_loss_obx-store:/db --publish 8081:8081 objectboxio/admin:latest
