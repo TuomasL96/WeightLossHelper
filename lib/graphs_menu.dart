@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:open_weight_tracker/main.dart';
 import 'package:open_weight_tracker/models.dart';
+import 'package:path/path.dart';
 
 class GraphsMenu extends StatefulWidget {
   const GraphsMenu({super.key});
@@ -16,11 +17,7 @@ class GraphsMenu extends StatefulWidget {
 class _GraphsMenuState extends State<GraphsMenu> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(2, 10, 2, 20),
-      alignment: Alignment.topCenter,
-      child: const ChartCard(),
-    );
+    return const ChartCard();
   }
 }
 
@@ -29,7 +26,7 @@ class ChartCard extends Card {
   @override
   // TODO: implement child
   Widget? get child => Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(2),
         child: Row(
           children: [
             WeightChart(userRepository
@@ -43,13 +40,19 @@ class WeightChart extends StatelessWidget {
   final List<WeighIn> weighIns;
   const WeightChart(this.weighIns, {super.key});
 
+  DateTime getDateOnly(DateTime dateTime) => DateUtils.dateOnly(dateTime);
+
   SideTitles get _bottomTitles => SideTitles(
       showTitles: true,
+      interval: Duration.millisecondsPerDay.toDouble(),
       getTitlesWidget: (value, meta) {
         String text = '';
-        final DateTime date =
-            DateTime.fromMillisecondsSinceEpoch(value.toInt());
-        text = DateFormat.MMMd().format(date);
+        if (value != meta.min) {
+          // Workaround for showing the min value twice
+          final DateTime date =
+              DateTime.fromMillisecondsSinceEpoch(value.toInt());
+          text = DateFormat.MMMd().format(date);
+        }
         return Text(
           text,
           style: const TextStyle(
@@ -60,6 +63,7 @@ class WeightChart extends StatelessWidget {
 
   SideTitles get _leftTitles => SideTitles(
       showTitles: true,
+      interval: 0.5,
       getTitlesWidget: (value, meta) {
         String text = '';
         text = value.toString();
@@ -73,76 +77,114 @@ class WeightChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-        aspectRatio: 1.5,
-        child: LineChart(LineChartData(
-          minX: weighIns.first.date.millisecondsSinceEpoch.toDouble(),
-          maxX: weighIns.last.date.millisecondsSinceEpoch.toDouble(),
-          borderData: FlBorderData(
-              border: const Border(bottom: BorderSide(), left: BorderSide())),
-          gridData: const FlGridData(show: false),
-          titlesData: FlTitlesData(
-            bottomTitles: AxisTitles(sideTitles: _bottomTitles),
-            leftTitles: AxisTitles(sideTitles: _leftTitles),
-            topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          ),
-          lineBarsData: [
-            LineChartBarData(
-                spots: weighIns
-                    .map((weighIn) => FlSpot(
-                        weighIn.date.millisecondsSinceEpoch.toDouble(),
-                        weighIn.weight))
-                    .toList(),
-                isCurved: false,
-                dotData: const FlDotData(
-                  show: true,
+    return Container(
+      padding: const EdgeInsets.all(10),
+      child: Center(
+        child: AspectRatio(
+            aspectRatio: 1.5,
+            child: LineChart(LineChartData(
+              // minY: userRepository
+              //         .getWeighInsSortedByWeight(userRepository.currentUser)
+              //         .first
+              //         .weight -
+              //     1.0,
+              // maxY: userRepository
+              //         .getWeighInsSortedByWeight(userRepository.currentUser)
+              //         .last
+              //         .weight +
+              //     1.0,
+              minX: (getDateOnly(weighIns.first.date).millisecondsSinceEpoch -
+                      Duration.millisecondsPerDay)
+                  .toDouble(),
+              maxX: (getDateOnly(weighIns.last.date).millisecondsSinceEpoch +
+                      Duration.millisecondsPerDay)
+                  .toDouble(),
+              borderData: FlBorderData(
+                  border:
+                      const Border(bottom: BorderSide(), left: BorderSide())),
+              gridData: const FlGridData(show: false),
+              titlesData: FlTitlesData(
+                bottomTitles: AxisTitles(
+                  axisNameSize: 32,
+                  drawBelowEverything: false,
+                  sideTitles: _bottomTitles,
+                  axisNameWidget: const Text(
+                      style: TextStyle(fontWeight: FontWeight.bold), 'Date'),
                 ),
-                color: Colors.blue),
-          ],
-          lineTouchData: LineTouchData(
-              enabled: true,
-              touchCallback:
-                  (FlTouchEvent event, LineTouchResponse? touchResponse) {
-                // TODO : Utilize touch event here to perform any operation
-              },
-              touchTooltipData: LineTouchTooltipData(
-                tooltipBgColor: Colors.blue,
-                tooltipRoundedRadius: 20.0,
-                showOnTopOfTheChartBoxArea: false,
-                fitInsideHorizontally: false,
-                fitInsideVertically: false,
-                tooltipMargin: 0,
-                getTooltipItems: (touchedSpots) {
-                  return touchedSpots.map(
-                    (LineBarSpot touchedSpot) {
-                      const textStyle = TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      );
-                      return LineTooltipItem(
-                        '${DateFormat.MMMd().format(weighIns[touchedSpot.spotIndex].date)} \n${weighIns[touchedSpot.spotIndex].weight.toStringAsFixed(2)} Kg',
-                        textStyle,
-                      );
-                    },
-                  ).toList();
-                },
+                leftTitles: AxisTitles(
+                  axisNameSize: 32,
+                  drawBelowEverything: false,
+                  sideTitles: _leftTitles,
+                  axisNameWidget: const Text(
+                      style: TextStyle(fontWeight: FontWeight.bold), 'Weight'),
+                ),
+                topTitles:
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                rightTitles:
+                    const AxisTitles(sideTitles: SideTitles(showTitles: false)),
               ),
-              getTouchedSpotIndicator:
-                  (LineChartBarData barData, List<int> indicators) {
-                return indicators.map(
-                  (int index) {
-                    const line = FlLine(
-                        color: Colors.grey, strokeWidth: 1, dashArray: [2, 4]);
-                    return const TouchedSpotIndicatorData(
-                      line,
-                      FlDotData(show: false),
-                    );
+              lineBarsData: [
+                LineChartBarData(
+                    spots: weighIns
+                        .map((weighIn) => FlSpot(
+                            getDateOnly(weighIn.date)
+                                .millisecondsSinceEpoch
+                                .toDouble(),
+                            weighIn.weight))
+                        .toList(),
+                    isCurved: false,
+                    dotData: const FlDotData(
+                      show: true,
+                    ),
+                    color: Colors.blue),
+              ],
+              lineTouchData: LineTouchData(
+                  enabled: true,
+                  touchCallback:
+                      (FlTouchEvent event, LineTouchResponse? touchResponse) {
+                    // TODO : Utilize touch event here to perform any operation
                   },
-                ).toList();
-              },
-              getTouchLineEnd: (_, __) => double.infinity),
-        )));
+                  touchTooltipData: LineTouchTooltipData(
+                    tooltipBgColor: Colors.blue,
+                    tooltipRoundedRadius: 20.0,
+                    showOnTopOfTheChartBoxArea: false,
+                    fitInsideHorizontally: false,
+                    fitInsideVertically: false,
+                    tooltipMargin: 16,
+                    getTooltipItems: (touchedSpots) {
+                      return touchedSpots.map(
+                        (LineBarSpot touchedSpot) {
+                          const textStyle = TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          );
+                          return LineTooltipItem(
+                            '${DateFormat.MMMd().format(weighIns[touchedSpot.spotIndex].date)} \n${weighIns[touchedSpot.spotIndex].weight.toStringAsFixed(2)} Kg',
+                            textStyle,
+                          );
+                        },
+                      ).toList();
+                    },
+                  ),
+                  getTouchedSpotIndicator:
+                      (LineChartBarData barData, List<int> indicators) {
+                    return indicators.map(
+                      (int index) {
+                        const line = FlLine(
+                            color: Colors.grey,
+                            strokeWidth: 1,
+                            dashArray: [2, 4]);
+                        return const TouchedSpotIndicatorData(
+                          line,
+                          FlDotData(show: false),
+                        );
+                      },
+                    ).toList();
+                  },
+                  getTouchLineEnd: (_, __) => double.infinity),
+            ))),
+      ),
+    );
   }
 }

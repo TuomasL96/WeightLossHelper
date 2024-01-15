@@ -20,10 +20,15 @@ abstract class _WeightFormStore with Store {
   bool get canSubmit => !error.hasErrors;
 
   @observable
-  late List<WeighIn> userWeighIns =
-      ObservableList<WeighIn>.of(userRepository.currentUser.weighIns);
+  late List<WeighIn> userWeighIns = ObservableList<WeighIn>.of(
+      userRepository.getWeighInsSortedByDate(userRepository.currentUser));
 
   late List<ReactionDisposer> _disposers;
+
+  void getNewWeighInList() {
+    userWeighIns = ObservableList<WeighIn>.of(
+        userRepository.getWeighInsSortedByDate(userRepository.currentUser));
+  }
 
   void setupValidations() {
     _disposers = [
@@ -36,12 +41,14 @@ abstract class _WeightFormStore with Store {
   void deleteWeighIn(WeighIn weighIn) {
     userWeighIns.remove(weighIn);
     userRepository.deleteWeighIn(userRepository.currentUser, weighIn);
+    getNewWeighInList();
   }
 
   @action
   void addWeighIn(WeighIn weighIn) {
     userWeighIns.add(weighIn);
     userRepository.addWeighIn(userRepository.currentUser, weighIn);
+    getNewWeighInList();
   }
 
   @action

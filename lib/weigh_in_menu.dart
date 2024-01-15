@@ -52,10 +52,6 @@ class WeighInList extends StatefulWidget {
 }
 
 class _WeighInListState extends State<WeighInList> {
-  void onChildUpdated() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
