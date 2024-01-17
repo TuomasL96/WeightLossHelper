@@ -107,7 +107,9 @@ class _WeighInCardState extends State<WeighInCard> {
 class WeighInCardPopup extends StatelessWidget {
   final WeighIn weighIn;
   final WeightFormStore store;
-  const WeighInCardPopup(this.weighIn, this.store, {super.key});
+  WeighInCardPopup(this.weighIn, this.store, {super.key});
+
+  final Alerts alerts = Alerts();
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +132,11 @@ class WeighInCardPopup extends StatelessWidget {
                   'Delete',
                   Icons.delete,
                   () => {
-                        store.deleteWeighIn(weighIn),
+                        alerts.showAlert(
+                            ctx,
+                            'Confirmation',
+                            'Are you sure you want to delete the weighin?',
+                            () => {store.deleteWeighIn(weighIn)})
                       }),
             ]);
   }

@@ -133,7 +133,7 @@ class UserCardPopup extends StatelessWidget {
         ),
         itemBuilder: (ctx) => [
               buildPopupMenuItem(
-                  'Edit',
+                  'Switch to',
                   Icons.edit, // TODO edit code
                   () => {
                         //todo,
