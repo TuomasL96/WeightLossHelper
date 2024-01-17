@@ -32,20 +32,27 @@ class _WeighInMenuState extends State<WeighInMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(child: WeighInForm(store)),
-        Expanded(child: WeighInList(currentUser: currentUser, store: store))
+        Expanded(
+          flex: 1,
+          child: WeighInForm(store),
+        ),
+        Expanded(
+          flex: 2,
+          child: WeighInList(currentUser: currentUser, store: store),
+        )
       ],
     );
   }
 }
 
 class WeighInList extends StatefulWidget {
-  User currentUser;
+  final User currentUser;
   final WeightFormStore store;
-  WeighInList({required this.currentUser, required this.store, super.key});
+  const WeighInList(
+      {required this.currentUser, required this.store, super.key});
 
   @override
   State<WeighInList> createState() => _WeighInListState();
@@ -164,7 +171,6 @@ class _WeighInFormState extends State<WeighInForm> {
           const SizedBox(height: 16),
           ElevatedButton(
               onPressed: widget.store.validateAll, child: const Text('Save')),
-          const SizedBox(height: 16),
         ],
       ),
     );

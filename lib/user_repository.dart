@@ -20,11 +20,7 @@ class UserRepository {
     Query<User> query =
         objectBox.userBox.query(User_.isCurrentUser.equals(true)).build();
     final user = query.findFirst();
-    if (user != null) {
-      return user;
-    } else {
-      throw ErrorDescription('NO CURRENT USER IN DB');
-    }
+    return (user != null) ? user : User('NoUser', '99', '190', true, true);
   }
 
   bool dbHasCurrentUser() {
