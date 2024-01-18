@@ -17,8 +17,8 @@ PopupMenuItem buildPopupMenuItem(String title, IconData iconData, onTap) {
   );
 }
 
-class Alerts {
-  void showAlert(BuildContext ctx, title, content, onYesPressed) {
+class Dialogs {
+  void showAlertDialog(BuildContext ctx, title, content, onYesPressed) {
     showDialog(
         context: ctx,
         builder: (_) => _buildAlertDialog(ctx, title, content, onYesPressed));
@@ -52,5 +52,14 @@ class Alerts {
         ),
       ],
     );
+  }
+
+  void showCustomDialog(Widget content, BuildContext ctx) {
+    showGeneralDialog(
+        context: ctx,
+        transitionDuration: const Duration(milliseconds: 400),
+        pageBuilder: (context, animation, anotheranimation) {
+          return content;
+        });
   }
 }

@@ -116,7 +116,7 @@ class WeighInCardPopup extends StatelessWidget {
   final WeightFormStore store;
   WeighInCardPopup(this.weighIn, this.store, {super.key});
 
-  final Alerts alerts = Alerts();
+  final Dialogs alerts = Dialogs();
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +139,7 @@ class WeighInCardPopup extends StatelessWidget {
                   'Delete',
                   Icons.delete,
                   () => {
-                        alerts.showAlert(
+                        alerts.showAlertDialog(
                             ctx,
                             'Confirmation',
                             'Are you sure you want to delete the weighin?',
