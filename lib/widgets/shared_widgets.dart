@@ -57,9 +57,9 @@ class Dialogs {
   void showCustomDialog(Widget content, BuildContext ctx) {
     showGeneralDialog(
         context: ctx,
-        transitionDuration: const Duration(milliseconds: 400),
-        pageBuilder: (context, animation, anotheranimation) {
+        pageBuilder: (context, animation, anotherAnimation) {
           return content;
-        });
+        },
+    );
   }
 }
